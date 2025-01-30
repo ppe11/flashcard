@@ -1,4 +1,4 @@
-Project Title:
+Project Title: LoveAtFirstPaw
 
 Group Members: 
 - Ashton Morrison
@@ -7,3 +7,4 @@ Group Members:
 - Oak Soe Khant
 
 Description:
+This is a website that utilizes different APIs to aid in the pet adoption process.
