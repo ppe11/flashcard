@@ -1,4 +1,4 @@
-Project Title: LoveAtFirstPaw
+Project Title: Love At First Paw
 
 Group Members: 
 - Ashton Morrison
