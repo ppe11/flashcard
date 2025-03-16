@@ -1,13 +1,13 @@
 'use client'
 
+import LandingPage from "@/components/LandingPage";
 import Navbar from "@/components/Navbar";
-import Home from "@/components/Home";
 
 export default function Home() {
   return (
     <>
     <Navbar></Navbar>
-    <Home></Home>
+    <LandingPage></LandingPage>
     </>
   );
 }
