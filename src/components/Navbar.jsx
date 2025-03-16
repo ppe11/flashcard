@@ -1,4 +1,6 @@
 import React from 'react'
+import { assets } from '@/assets/assets'
+import Image from 'next/image'
 
 const Navbar = () => {
   return (
@@ -6,7 +8,7 @@ const Navbar = () => {
 
         <div>
             <a href="#home" className="flex items-center">
-                <img src="/Icon%20paw.png" alt="Paw" />
+                <Image src={assets.icon_paw} alt="Paw" />
             </a>
         </div>
 
