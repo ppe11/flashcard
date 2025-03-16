@@ -1,4 +1,4 @@
-import icon_paw from './Icon paw.png';
+import icon_paw from './icon-paw.png';
 
 export const assets = {
     icon_paw,
