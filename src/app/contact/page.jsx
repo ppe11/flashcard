@@ -33,8 +33,8 @@ const ContactPage = () => {
   
   return (
     <div className="flex flex-col justify-between bg-orange-50 px-6">
-     <div className="flex flex-grow justify-center items-center py-24">
-        <div className="bg-orange-200 p-6 md:p-8 rounded-2xl shadow-2xl w-full max-w-md h-auto sm:max-w-lg md:max-w-xl">
+     <div className="flex flex-grow justify-center items-center py-24 mb-[-80px]">
+        <div className="bg-orange-200 p-6 md:p-8 rounded-2xl shadow-l w-full max-w-md h-auto sm:max-w-lg md:max-w-xl">
           <h2 className="text-center text-2xl md:text-3xl font-semibold mb-5">Send Us a Message!</h2>
           
           <form className="space-y-4" onSubmit={onSubmit}>
