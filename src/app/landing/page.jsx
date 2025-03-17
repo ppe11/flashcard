@@ -4,7 +4,6 @@ import React from 'react'
 import Image from 'next/image'
 import { assets } from '@/assets/assets'
 import Link from 'next/link'
-import Footer from '@/components/Footer'
 
 const LandingPage = () => {
   return (
