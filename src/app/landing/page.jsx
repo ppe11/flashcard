@@ -12,7 +12,7 @@ const LandingPage = () => {
           </h2>
 
           <p className='text-base sm:text-xl text-gray-700 max-w-2xl leading-relaxed mt-3'>
-            Adopting a pet has never been easier! <span className="font-semibold">LoveAtFirstPaw</span> 
+            Adopting a pet has never been easier! <span className="font-semibold">LoveAtFirstPaw </span> 
             connects you with cats and dogs from nearby shelters based on your personality and lifestyle. 
             Take a quick quiz and discover your ideal furry companion today!
           </p>
