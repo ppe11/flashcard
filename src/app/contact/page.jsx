@@ -86,7 +86,7 @@ const ContactPage = () => {
                 Submit
               </button>
             </div>
-            <p className='mt-[-20px]'>
+            <p className='mt-[-21px]'>
                 {result}
             </p>
           </form>
