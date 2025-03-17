@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { assets } from '@/assets/assets'
+import Link from 'next/link'
 
 const LandingPage = () => {
   return (
@@ -17,9 +18,13 @@ const LandingPage = () => {
             Take a quick quiz and discover your ideal furry companion today!
           </p>
 
-          <button className="bg-orange-500 text-white md:text-xl font-semibold py-4 px-8 rounded-full shadow-md hover:bg-orange-600 transition mt-5">
-            Take a quiz!
-          </button>
+        <Link href="/quiz">
+            <button className="bg-orange-500 text-white md:text-xl font-semibold py-4 px-8 rounded-full shadow-md hover:bg-orange-600 transition mt-5">
+                Take a quiz!
+            </button>
+        </Link>
+            
+    
         </div>
 
         <div className='lg:w-5/12 lg:flex hidden justify-center'>
