@@ -4,7 +4,7 @@ import { assets } from '@/assets/assets'
 
 const LandingPage = () => {
   return (
-    <div id='home' className='px-[10%] lg:pl-[12%] py-20 scroll-mt-[100px] min-h-screen bg-orange-50 flex items-center justify-center'>
+    <div className='px-[10%] lg:pl-[12%] py-20 scroll-mt-[100px] min-h-screen bg-orange-50 flex items-center justify-center'>
       <div className='flex w-full flex-col lg:flex-row items-center gap-24 mx-auto'>
         <div className='lg:w-5/9 w-full flex flex-col items-center text-center space-y-6'>
           <h2 className='text-3xl md:text-5xl font-bold text-[#0D0D46]'>
