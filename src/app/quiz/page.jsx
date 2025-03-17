@@ -1,6 +1,8 @@
+'use client'
+
 import React from 'react'
 
-const quiz = () => {
+const Quiz = () => {
   return (
     <div>
       
@@ -8,4 +10,4 @@ const quiz = () => {
   )
 }
 
-export default quiz
+export default Quiz

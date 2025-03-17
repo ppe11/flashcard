@@ -1,11 +1,13 @@
+'use client'
+
 import React from 'react'
 
-const contactPage = () => {
+const ContactPage = () => {
   return (
-    <div>
+    <div style={{ padding: "50px", textAlign: "center" }}>
       
     </div>
   )
 }
 
-export default contactPage
+export default ContactPage

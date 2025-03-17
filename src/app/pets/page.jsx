@@ -1,6 +1,8 @@
+'use client'
+
 import React from 'react'
 
-const pets = () => {
+const Pets = () => {
   return (
     <div>
       
@@ -8,4 +10,4 @@ const pets = () => {
   )
 }
 
-export default pets
+export default Pets

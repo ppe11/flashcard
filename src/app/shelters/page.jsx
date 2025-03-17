@@ -1,13 +1,15 @@
+'use client'
+
 import { assets } from '@/assets/assets'
 import Image from 'next/image'
 import React from 'react'
 
-const shelters = () => {
+const Shelters = () => {
   return (
      <div>
-        
+
      </div>
   )
 }
 
-export default shelters
+export default Shelters
