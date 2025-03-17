@@ -48,7 +48,7 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-black my-6 lg:mt-[-1px]"></div>
+        <div className="border-t border-black my-6 lg:mt-[5px]"></div>
 
         {/* Copyright */}
         <div className="text-center text-black text-sm lg:mt-[-10px]">
