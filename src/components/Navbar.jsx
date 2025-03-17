@@ -21,7 +21,7 @@ const Navbar = () => {
         </ul>
 
         <div className='flex items-center gap-4'>
-            <a href="#contact" className="flex items-center gap-3 px-10 py-2.5 border border-orange-500 bg-orange-500 shadow-lg
+            <a href="/contactPage" className="flex items-center gap-3 px-10 py-2.5 border border-orange-500 bg-orange-500 shadow-lg
                 text-white rounded-full ml-4 font-Ovo hover:bg-orange-600 hover:border-orange-600 transition"> 
             Contact 
             </a>
