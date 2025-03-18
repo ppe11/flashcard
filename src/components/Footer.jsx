@@ -4,7 +4,7 @@ import { assets } from "@/assets/assets";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#FDE7CB] py-8">
+    <footer className="bg-[#FDE7CB] py-8 bottom-0 left-0 right-0 z-50">
       <div className="container mx-auto px-6 h-auto">
         <div className="flex flex-col md:flex-row lg:mt-[-20px]">
           {/* Left - Paw Icon */}
