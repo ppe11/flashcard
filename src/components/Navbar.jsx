@@ -4,7 +4,8 @@ import Image from 'next/image'
 
 const Navbar = () => {
   return (
-    <nav className="w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 bg-orange-50 text-gray-900 shadow-md ">
+    <nav className="w-full fixed top-0 left-0 right-0 z-50
+    px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between bg-orange-50 text-gray-900 shadow-md ">
 
         <div>
             <a href="/landing" className="flex items-center">
