@@ -4,10 +4,15 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
+/**
+ * Replace with API integration
+ * Sub API data in appropriate places
+ * Automatically updates to all Pets{...} pages
+ */
+
 const PetGrid = ({ type }) => {
   const [pets, setPets] = useState([]);
 
-  // Simulated API placeholder data
   useEffect(() => {
     const placeholderData = {
       all: [
@@ -23,9 +28,9 @@ const PetGrid = ({ type }) => {
   }, [type]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 py-6 px-16">
       {pets.map((pet, index) => (
-        <Card key={index} className="shadow-lg hover:shadow-xl transition duration-300">
+        <Card key={index} className="shadow-sm hover:shadow-xl transition duration-600">
           <CardHeader className="flex items-center justify-center p-4">
             <img src={pet.image} alt={pet.name} className="w-32 h-32 object-contain" />
           </CardHeader>
@@ -37,8 +42,8 @@ const PetGrid = ({ type }) => {
               ))}
             </ul>
           </CardContent>
-          <CardFooter className="flex justify-center p-4">
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white">Adopt me!</Button>
+          <CardFooter className="flex justify-center p-2">
+            <Button className="bg-orange-500 hover:bg-orange-600 text-white text-lg border rounded-3xl p-5">Adopt me!</Button>
           </CardFooter>
         </Card>
       ))}
