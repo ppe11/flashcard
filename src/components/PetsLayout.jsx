@@ -19,7 +19,7 @@ const PetsLayout = ({ children }) => {
           {/*Tabs Navigation */}
           <Tabs value={activeCategory} onValueChange={handleCategoryChange} className="w-full flex justify-center items-center ">
           <TabsList className="bg-transparent p-0 h-auto gap-4 flex justify-center">
-              {["pets_all", "pets_cats", "pets_dogs", "pets_fish"].map((category) => (
+              {["pets_all", "pets_cats", "pets_dogs", "pets_birds"].map((category) => (
                 <TabsTrigger
                   key={category}
                   value={category}

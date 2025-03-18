@@ -17,11 +17,19 @@ const PetGrid = ({ type }) => {
     const placeholderData = {
       all: [
         { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
+        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' },
+        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
+        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' },
+        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
+        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' },
+        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
+        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' },
+        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
         { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' }
       ],
       cats: Array(5).fill({ name: 'Cat Name', description: ['Loves to sleep', 'Friendly'], image: '/cat.png' }),
       dogs: Array(5).fill({ name: 'Dog Name', description: ['Loyal companion', 'Energetic'], image: '/dog.png' }),
-      fish: Array(5).fill({ name: 'Fish Name', description: ['Colorful and vibrant', 'Easy to care'], image: '/fish.png' })
+      birds: Array(5).fill({ name: 'Bird Name', description: ['Colorful and vibrant', 'Easy to care'], image: '/bird.png' })
     };
 
     setPets(placeholderData[type] || []);
