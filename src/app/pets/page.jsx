@@ -1,8 +1,8 @@
 'use client'
 
-import { Tabs, TabsList, TabsTrigger } from '@radix-ui/react-tabs'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePathname, useRouter } from 'next/navigation';
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Pets = ({ children }) => {
     // Handles multiple page routes
@@ -10,6 +10,12 @@ const Pets = ({ children }) => {
     const pathname = usePathname();
     const activeCategory = pathname.split('/')[1] || 'all';
   
+    useEffect(() => {
+        if (!["all", "cats", "dogs", "fish"].includes(activeCategory)) {
+          router.push('/all'); // Redirect to default if an invalid category
+        }
+      }, [activeCategory, router]);
+
     const handleCategoryChange = (category) => {
       router.push(`/${category}`);
     };
