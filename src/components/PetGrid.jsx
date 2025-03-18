@@ -1,37 +1,46 @@
-import React from 'react';
+'use client';
 
-
-/**
- * Replace with API integration
- * Sub API data in appropriate places
- * Automatically updates to all Pets{...} pages
- */
-
-const petData = {
-    
-  all: [
-    { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2', 'cat’s description #3'], image: '/cat.png' },
-    { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2', 'dog’s description #3'], image: '/dog.png' }
-  ],
-  cats: Array(8).fill({ name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2', 'cat’s description #3'], image: '/cat.png' }),
-  dogs: Array(8).fill({ name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2', 'dog’s description #3'], image: '/dog.png' }),
-  fish: Array(8).fill({ name: 'Fish Name #1', description: ['fish’s description #1', 'fish’s description #2', 'fish’s description #3'], image: '/fish.png' })
-};
+import React, { useState, useEffect } from 'react';
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const PetGrid = ({ type }) => {
+  const [pets, setPets] = useState([]);
+
+  // Simulated API placeholder data
+  useEffect(() => {
+    const placeholderData = {
+      all: [
+        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
+        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' }
+      ],
+      cats: Array(5).fill({ name: 'Cat Name', description: ['Loves to sleep', 'Friendly'], image: '/cat.png' }),
+      dogs: Array(5).fill({ name: 'Dog Name', description: ['Loyal companion', 'Energetic'], image: '/dog.png' }),
+      fish: Array(5).fill({ name: 'Fish Name', description: ['Colorful and vibrant', 'Easy to care'], image: '/fish.png' })
+    };
+
+    setPets(placeholderData[type] || []);
+  }, [type]);
+
   return (
-    <div className="grid grid-cols-4 gap-6">
-      {petData[type].map((pet, index) => (
-        <div key={index} className="border rounded-lg bg-orange-100 p-4">
-          <img src={pet.image} alt={pet.name} className="w-full h-40 object-contain" />
-          <h3 className="text-lg font-semibold">{pet.name}</h3>
-          <ul className="text-sm">
-            {pet.description.map((desc, i) => (
-              <li key={i}>• {desc}</li>
-            ))}
-          </ul>
-          <button className="mt-2 px-4 py-2 bg-orange-500 text-white rounded-md">Adopt me!</button>
-        </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+      {pets.map((pet, index) => (
+        <Card key={index} className="shadow-lg hover:shadow-xl transition duration-300">
+          <CardHeader className="flex items-center justify-center p-4">
+            <img src={pet.image} alt={pet.name} className="w-32 h-32 object-contain" />
+          </CardHeader>
+          <CardContent className="text-center">
+            <h3 className="text-lg font-semibold">{pet.name}</h3>
+            <ul className="text-sm text-gray-600 mt-2">
+              {pet.description.map((desc, i) => (
+                <li key={i}>• {desc}</li>
+              ))}
+            </ul>
+          </CardContent>
+          <CardFooter className="flex justify-center p-4">
+            <Button className="bg-orange-500 hover:bg-orange-600 text-white">Adopt me!</Button>
+          </CardFooter>
+        </Card>
       ))}
     </div>
   );
