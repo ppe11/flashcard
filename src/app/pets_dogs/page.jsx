@@ -3,11 +3,7 @@
 import React from 'react'
 
 const PetsDogs = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+    return <PetGrid type="dogs" />;
+};
 
 export default PetsDogs
