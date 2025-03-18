@@ -4,7 +4,7 @@ import { assets } from "@/assets/assets";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#FDE7CB] py-8">
+    <footer className="bg-[#FDE7CB] py-8 bottom-0 left-0 right-0 z-50">
       <div className="container mx-auto px-6 h-auto">
         <div className="flex flex-col md:flex-row lg:mt-[-20px]">
           {/* Left - Paw Icon */}
@@ -20,7 +20,7 @@ const Footer = () => {
             <div className="text-center md:text-left text-sm ">
               <h3 className="font-bold">Company</h3>
               <ul className="mt-2 space-y-1 text-gray-700">
-                <li><a href="#" className="hover:underline">About us</a></li>
+                <li><a href="/landing" className="hover:underline">About us</a></li>
                 <li><a href="#" className="hover:underline">FAQ</a></li>
                 <li><a href="/contact" className="hover:underline">Contact</a></li>
               </ul>
