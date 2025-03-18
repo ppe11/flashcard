@@ -38,7 +38,7 @@ const PetGrid = ({ type }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 py-6 px-16">
       {pets.map((pet, index) => (
-        <Card key={index} className="shadow-sm hover:shadow-xl transition duration-600">
+        <Card key={index} className="shadow-sm hover:shadow-xl transition duration-600 bg-orange-50">
           <CardHeader className="flex items-center justify-center p-4">
             <img src={pet.image} alt={pet.name} className="w-32 h-32 object-contain" />
           </CardHeader>
