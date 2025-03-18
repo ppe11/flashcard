@@ -5,7 +5,7 @@ import Image from 'next/image'
 const Navbar = () => {
   return (
     <nav className="w-full fixed top-0 left-0 right-0 z-50
-    px-5 lg:px-8 xl:px-[8%] py-4 flex flex-grow items-center bg-orange-50 text-gray-900 shadow-md ">
+    px-5 lg:px-8 xl:px-[8%] py-4 flex items-center bg-orange-50 text-gray-900 shadow-md ">
 
         <div className="flex items-center pr-20 ">
             <a href="/landing">
@@ -21,8 +21,8 @@ const Navbar = () => {
         </ul>
         
 
-        <div className='flex items-center gap-4 pl-110'>
-            <a href="/contact" className="flex items-center gap-3 px-10 py-2.5 border border-orange-500 bg-orange-500 shadow-lg
+        <div className='flex ml-auto gap-4 '>
+            <a href="/contact" className="flex gap-3 px-10 py-2.5 border border-orange-500 bg-orange-500 shadow-lg
                 text-white rounded-full ml-4 font-Ovo hover:bg-orange-600 hover:border-orange-600 transition text-xl"> 
             Contact 
             </a>
