@@ -8,11 +8,11 @@ const Pets = ({ children }) => {
     // Handles multiple page routes
     const router = useRouter();
     const pathname = usePathname();
-    const activeCategory = pathname.split('/')[1] || 'all';
+    const activeCategory = pathname.split('/')[1] || 'pets_all';
   
     useEffect(() => {
-        if (!["all", "cats", "dogs", "fish"].includes(activeCategory)) {
-          router.push('/all'); // Redirect to default if an invalid category
+        if (!["pets_all", "pets_cats", "pets_dogs", "pets_fish"].includes(activeCategory)) {
+          router.push('/pets_all'); // Redirect to default if an invalid category
         }
       }, [activeCategory, router]);
 
@@ -25,7 +25,7 @@ const Pets = ({ children }) => {
           {/* Tabs Navigation */}
           <Tabs value={activeCategory} onValueChange={handleCategoryChange} className="w-full">
             <TabsList className="bg-transparent p-0 h-auto space-x-2 flex">
-              {["all", "cats", "dogs", "fish"].map((category) => (
+              {["pets_all", "pets_cats", "pets_dogs", "pets_fish"].map((category) => (
                 <TabsTrigger
                   key={category}
                   value={category}
