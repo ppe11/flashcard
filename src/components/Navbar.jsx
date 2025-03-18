@@ -18,7 +18,7 @@ const Navbar = () => {
             <li><a href="/landing">Home</a></li>
             <li><a href="/shelters">Shelters</a></li>
             <li><a href="/quiz">Quiz</a></li>
-            <li><a href="/pets">Pets</a></li>
+            <li><a href="/pets_all">Pets</a></li>
         </ul>
 
         <div className='flex items-center gap-4'>
