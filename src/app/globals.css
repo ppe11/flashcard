@@ -196,3 +196,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Fix tabs in pet page not going invisible */
+[data-state='active'] {
+  background-color: #f97316 !important;  
+  color: white !important;               
+  border-color: #f97316 !important;      
+}
