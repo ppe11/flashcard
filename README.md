@@ -15,8 +15,8 @@ Clone the repository and install dependencies:
 
 ```bash
 # Clone the repo
-git clone git@github.com:Oaksoe11/Oaksoe11.github.io.git
-cd your-portfolio
+git clone URL
+cd your-file-path
 
 # Install dependencies
 npm install  # or yarn install
