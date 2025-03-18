@@ -16,9 +16,9 @@ const PetsLayout = ({ children }) => {
 
     return (
         <div className="w-full pt-[100px]">
-          {/* Persistent Tabs Navigation */}
-          <Tabs value={activeCategory} className="w-full flex justify-center items-center ">
-          <TabsList className="bg-transparent p-0 h-auto gap-4 ">
+          {/*Tabs Navigation */}
+          <Tabs value={activeCategory} onValueChange={handleCategoryChange} className="w-full flex justify-center items-center ">
+          <TabsList className="bg-transparent p-0 h-auto gap-4 flex justify-center">
               {["pets_all", "pets_cats", "pets_dogs", "pets_fish"].map((category) => (
                 <TabsTrigger
                   key={category}
