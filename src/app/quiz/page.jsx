@@ -2,15 +2,17 @@
 
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { assets } from '@/assets/assets';
+import Image from 'next/image';
 
 const pets = [
-  { name: 'Dogs', image: '', path: '/quiz/dogs' },
-  { name: 'Cats', image: '', path: '/quiz/cats' },
-  { name: 'Fish', image: '', path: '/quiz/fish' },
-  { name: 'Birds', image: '', path: '/quiz/birds' },
-  { name: 'Small pets', image: '', path: '/quiz/small-pets' },
-  { name: 'Reptiles', image: '', path: '/quiz/reptiles' },
-  { name: 'or.....Let us decide!', image: '', path: '/quiz/random' },
+  { name: 'Dogs', image: assets.dog_quiz, path: '/quiz/dogs' },
+  { name: 'Cats', image: assets.cat_quiz, path: '/quiz/cats' },
+  { name: 'Fish', image: assets.fish_quiz, path: '/quiz/fish' },
+  { name: 'Birds', image: assets.bird_quiz, path: '/quiz/birds' },
+  { name: 'Small pets', image: assets.smallpets_quiz, path: '/quiz/small-pets' },
+  { name: 'Reptiles', image: assets.reptiles_quiz, path: '/quiz/reptiles' },
+  { name: 'or.....Let us decide!', image: assets.general_quiz, path: '/quiz/random' },
 ];
 
 const Quiz = () => {
@@ -21,7 +23,7 @@ const Quiz = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center items-center bg-orange-50 p-10">
+    <div className="w-full flex flex-col justify-center items-center bg-orange-50 min-h-screen">
       <h2 className="text-2xl font-semibold mb-6">Choose your desired pet to take a quiz!</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -31,10 +33,12 @@ const Quiz = () => {
             className="cursor-pointer shadow-md hover:shadow-xl transition duration-300 bg-orange-100 p-4 text-center rounded-xl"
             onClick={() => handleClick(pet.path)}
           >
-            <CardHeader className="flex justify-center">
-              <img src={pet.image} alt={pet.name} className="w-24 h-24 object-contain" />
-            </CardHeader>
-            <CardContent className="text-lg font-medium">{pet.name}</CardContent>
+          <CardHeader className="flex justify-center">
+            <div className="relative w-24 h-24">
+              <Image src={pet.image} alt={pet.name} fill objectFit="contain" />
+            </div>
+          </CardHeader>
+          <CardContent className="text-lg font-medium">{pet.name}</CardContent>
           </Card>
         ))}
       </div>
