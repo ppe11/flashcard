@@ -32,7 +32,7 @@ const ContactPage = () => {
   };
   
   return (
-    <div className="flex flex-col justify-center items-center  2xl:pt-[280px] lg:pt-[100px]">
+    <div className="flex flex-col justify-center items-center  3xl:pt-[280px] lg:pt-[130px]">
       {/* Centered Form Container */}
       <div className="w-full max-w-md sm:max-w-lg md:max-w-xl bg-[#FDE7CB] p-6 md:p-8 rounded-2xl hover:shadow-xl transition duration-400">
         <h2 className="text-center text-2xl md:text-3xl font-semibold mb-5">Send Us a Message!</h2>
