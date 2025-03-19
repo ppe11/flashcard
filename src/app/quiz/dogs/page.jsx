@@ -9,3 +9,4 @@ const QuizDogs = () => {
 }
 
 export default QuizDogs
+
