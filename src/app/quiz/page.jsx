@@ -26,20 +26,21 @@ const Quiz = () => {
     <div className="w-full flex flex-col justify-center items-center bg-orange-50 min-h-screen">
       <h2 className="text-2xl font-semibold mb-6">Choose your desired pet to take a quiz!</h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 auto-rows-min">
         {pets.map((pet, index) => (
           <Card
             key={index}
-            className="cursor-pointer shadow-md hover:shadow-xl transition duration-300 bg-orange-100 text-center rounded-xl"
+            className={`cursor-pointer shadow-md hover:shadow-xl transition duration-300 bg-orange-100 px-4 pt-3 pb-0 text-center rounded-xl flex flex-col 
+              ${pet.name === "or.....Let us decide!" ? "h-49 w-full md:col-span-2" : "h-49 w-44"}`}
             onClick={() => handleClick(pet.path)}
           >
-          <CardContent className="text-lg font-medium">{pet.name}</CardContent>
-          <div className="flex-grow flex items-end justify-center">
+          <CardContent className="text-lg font-medium py-2">{pet.name}</CardContent>
+          <div className="flex-grow flex items-end justify-center mt-auto min-h-0">
             <Image 
               src={pet.image} 
               alt={pet.name} 
-              width={70}  
-              height={70}  
+              width={100}  
+              height={100}  
               className="object-contain"
             />
           </div>
