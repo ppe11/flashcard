@@ -10,7 +10,7 @@ const pets = [
   { name: 'Cats', image: assets.cat_quiz, path: '/quiz/cats' },
   { name: 'Fish', image: assets.fish_quiz, path: '/quiz/fish' },
   { name: 'Birds', image: assets.bird_quiz, path: '/quiz/birds' },
-  { name: 'Small pets', image: assets.smallpets_quiz, path: '/quiz/small-pets' },
+  { name: 'Small pets', image: assets.smallpets_quiz, path: '/quiz/smallpets' },
   { name: 'Reptiles', image: assets.reptiles_quiz, path: '/quiz/reptiles' },
   { name: 'or.....Let us decide!', image: assets.general_quiz, path: '/quiz/random' },
 ];
