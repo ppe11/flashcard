@@ -18,12 +18,15 @@ const shelters = [
     { id: 4, name: "##Shelter Name##", contact: "(888) 888-888", location: "8888 88 Ave", hours: "8am - 8pm" },
     { id: 5, name: "##Shelter Name##", contact: "(888) 888-888", location: "8888 88 Ave", hours: "8am - 8pm" },
     { id: 6, name: "##Shelter Name##", contact: "(888) 888-888", location: "8888 88 Ave", hours: "8am - 8pm" },
+    { id: 7, name: "##Shelter Name##", contact: "(888) 888-888", location: "8888 88 Ave", hours: "8am - 8pm" },
+    { id: 8, name: "##Shelter Name##", contact: "(888) 888-888", location: "8888 88 Ave", hours: "8am - 8pm" },
+    { id: 9, name: "##Shelter Name##", contact: "(888) 888-888", location: "8888 88 Ave", hours: "8am - 8pm" },
   ];
 
 
 const Shelters = () => {
   return (
-    <div className="w-full mx-auto p-15 pt-[100px] bg-orange-50">
+    <div className="w-full mx-auto p-20 pt-[100px] bg-orange-50 2xl:pt-[150px]">
       {/* Search Section */}
       <div className="flex flex-col items-center gap-6">
         <h2 className="text-2xl font-semibold">Search nearby pet shelters</h2>
@@ -33,13 +36,13 @@ const Shelters = () => {
           <span className="self-center">or</span>
           {/* By shelter name search */}
           <Input placeholder="Shelter name" className="flex-1 bg-white border border-orange-400 hover:border-2" />
-          <Button className="bg-orange-500 hover:bg-orange-600 text-white px-6">Search</Button>
+          <Button className="bg-orange-500 hover:bg-orange-600 text-white px-6 text-lg rounded-2xl">Search</Button>
         </div>
       </div>
 
       {/* Interactive Map */}
       <div 
-        className="w-full h-64 bg-gray-200 rounded-lg mt-6 overflow-hidden"
+        className="w-full h-64 bg-gray-200 rounded-lg mt-6 overflow-hidden shadow-lg"
         >
         {/* Replace this div with map integration */}
         <div className="w-full h-full flex items-center justify-center bg-gray-300 text-gray-600">
@@ -49,7 +52,7 @@ const Shelters = () => {
 
       {/* Results Section */}
       <h3 className="text-center text-xl font-semibold mt-8">Here are the results:</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mt-6">
         {shelters.map((shelter) => (
           <div 
             key={shelter.id} 
@@ -67,7 +70,7 @@ const Shelters = () => {
                   <p className="text-sm">Contact: {shelter.contact}</p>
                   <p className="text-sm">Location: {shelter.location}</p>
                   <p className="text-sm">Open: {shelter.hours}</p>
-                  <Button className="mt-2 bg-orange-500 hover:bg-orange-600 text-white w-full">View</Button>
+                  <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white w-full text-md rounded-2xl">View</Button>
                 </CardContent>
               </div>
             </Card>
