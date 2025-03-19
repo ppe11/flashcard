@@ -78,7 +78,7 @@ const QuizComponent = ({ questions }) => {
                 <div className={`w-5 h-5 border-2 border-gray-500 rounded-full flex items-center justify-center peer-checked:bg-orange-500 peer-checked:border-orange-500`}>
                   {selectedAnswers[currentQuestion] === option && <div className="w-2.5 h-2.5 bg-white rounded-full"></div>}
                 </div>
-                <span className="text-md font-medium">{option}</span>
+                <span className="text-md font-medium">{option.label}</span> 
               </label>
             ))}
           </div>
