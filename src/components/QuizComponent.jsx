@@ -64,41 +64,44 @@ const QuizComponent = ({ questions }) => {
       ) : (
         <div>
           <h2 className="text-xl font-semibold mb-4">{questions[currentQuestion].question}</h2>
+          <p className="text-sm text-gray-600 text-left mb-4">
+            Question {currentQuestion + 1} out of {questions.length}
+          </p>
           <div className="flex flex-col gap-4 text-left">
             {questions[currentQuestion].options.map((option, index) => (
               <label key={index} className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name={`question-${currentQuestion}`}
-                  value={option}
-                  checked={selectedAnswers[currentQuestion] === option}
-                  onChange={() => handleAnswerChange(option)}
-                  className="hidden peer"
-                />
-                <div className={`w-5 h-5 border-2 border-gray-500 rounded-full flex items-center justify-center peer-checked:bg-orange-500 peer-checked:border-orange-500`}>
-                  {selectedAnswers[currentQuestion] === option && <div className="w-2.5 h-2.5 bg-white rounded-full"></div>}
-                </div>
-                <span className="text-md font-medium">{option.label}</span> 
-              </label>
+              <input
+                type="radio"
+                name={`question-${currentQuestion}`}
+                value={option.value}
+                checked={selectedAnswers[currentQuestion] === option.value}
+                onChange={() => handleAnswerChange(option.value)}
+                className="hidden peer"
+              />
+              <div className="w-5 h-5 border-2 border-gray-500 rounded-md flex items-center justify-center peer-checked:bg-orange-500 peer-checked:border-orange-500">
+                {selectedAnswers[currentQuestion] === option.value && <div className="w-2.5 h-2.5 bg-white rounded-full"></div>}
+              </div>
+              <span className="text-md font-medium">{option.label}</span> 
+            </label>
             ))}
           </div>
 
           {/* Navigation Buttons */}
           <div className="flex justify-between mt-6">
             <Button
-              className="bg-gray-300 text-black hover:bg-gray-400"
-              disabled={currentQuestion === 0}
-              onClick={handlePrevious}
-            >
-              Previous
-            </Button>
+                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-3xl shadow-2xl"
+                disabled={currentQuestion === 0}
+                onClick={handlePrevious}
+                >
+                Previous
+                </Button>
 
-            <Button
-              className="bg-orange-500 hover:bg-orange-600 text-white"
-              disabled={!selectedAnswers[currentQuestion]}
-              onClick={handleNext}
-            >
-              {currentQuestion + 1 < questions.length ? 'Next' : 'See Results'}
+                <Button
+                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-3xl shadow-2xl"
+                disabled={!selectedAnswers[currentQuestion]}
+                onClick={handleNext}
+                >
+                {currentQuestion + 1 < questions.length ? 'Next' : 'See Results'}
             </Button>
           </div>
         </div>
