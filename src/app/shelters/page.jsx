@@ -26,7 +26,7 @@ const shelters = [
 
 const Shelters = () => {
   return (
-    <div className="w-full mx-auto p-20 pt-[100px] bg-orange-50 2xl:pt-[150px]">
+    <div className="w-full mx-auto p-20 pt-[100px] 2xl:pt-[150px]">
       {/* Search Section */}
       <div className="flex flex-col items-center gap-6">
         <h2 className="text-2xl font-semibold">Search nearby pet shelters</h2>
