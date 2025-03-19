@@ -50,7 +50,7 @@ const PetGrid = ({ type }) => {
               ))}
             </ul>
           </CardContent>
-          <CardFooter className="flex justify-center p-2">
+          <CardFooter className="flex justify-center p-2 pb-8">
             <Button className="bg-orange-500 hover:bg-orange-600 text-white text-lg border rounded-3xl p-5">Adopt me!</Button>
           </CardFooter>
         </Card>

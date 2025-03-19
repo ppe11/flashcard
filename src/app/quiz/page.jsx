@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { assets } from '@/assets/assets';
 import Image from 'next/image';
 
@@ -30,15 +30,19 @@ const Quiz = () => {
         {pets.map((pet, index) => (
           <Card
             key={index}
-            className="cursor-pointer shadow-md hover:shadow-xl transition duration-300 bg-orange-100 p-4 text-center rounded-xl"
+            className="cursor-pointer shadow-md hover:shadow-xl transition duration-300 bg-orange-100 text-center rounded-xl"
             onClick={() => handleClick(pet.path)}
           >
-          <CardHeader className="flex justify-center">
-            <div className="relative w-24 h-24">
-              <Image src={pet.image} alt={pet.name} fill objectFit="contain" />
-            </div>
-          </CardHeader>
           <CardContent className="text-lg font-medium">{pet.name}</CardContent>
+          <div className="flex-grow flex items-end justify-center">
+            <Image 
+              src={pet.image} 
+              alt={pet.name} 
+              width={70}  
+              height={70}  
+              className="object-contain"
+            />
+          </div>
           </Card>
         ))}
       </div>
