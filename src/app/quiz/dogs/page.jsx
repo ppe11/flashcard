@@ -6,7 +6,7 @@ import { assets } from '@/assets/assets';
 
 const dogQuestions = [
     {
-      question: "What age range are you looking for in a dog? (Select multiple)",
+      question: "What age range are you looking for in a dog?",
       options: [
         { label: "Puppy", value: "baby" },
         { label: "Junior", value: "young" },
@@ -24,6 +24,7 @@ const dogQuestions = [
         { label: "A house with a yard", value: "medium" },
         { label: "A large property or farm", value: "xlarge" },
       ],
+      image: assets.dog,
       multiple: false, 
       apiField: "size",
     },
@@ -34,17 +35,19 @@ const dogQuestions = [
         { label: "A few short walks a day", value: "moderate-energy" },
         { label: "I love long walks and outdoor adventures!", value: "high-energy" },
       ],
+      image: assets.dog,
       multiple: false,
       apiField: "breed", 
     },
     {
-      question: "Do you have young children or other pets? (Select multiple, but No takes priority)",
+      question: "Do you have young children or other pets?",
       options: [
         { label: "Yes, I have kids", value: "good_with_children" },
         { label: "Yes, I have other dogs", value: "good_with_dogs" },
         { label: "Yes, I have cats", value: "good_with_cats" },
         { label: "No, it’s just me", value: "no_pets" },
       ],
+      image: assets.dog,
       multiple: true,
       apiField: "tags",
     },
@@ -56,6 +59,7 @@ const dogQuestions = [
         { label: "I’d prefer to deal with fur as little as possible", value: "short" },
         { label: "I have allergies and need a hypoallergenic dog", value: "hypoallergenic" },
       ],
+      image: assets.dog,
       multiple: false,
       apiField: "coat",
     },
