@@ -67,17 +67,17 @@ const QuizComponent = ({ questions }) => {
                 ))}
             </div>
 
-            <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white" onClick={() => window.location.reload()}>
+            <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white text-md rounded-3xl shadow-2xl" onClick={() => window.location.reload()}>
                 Retake Quiz
             </Button>
             </div>
         ) : (
             <div>
-            <h2 className="text-2xl font-semibold mb-4 mt-3">{questions[currentQuestion].question}</h2>
-            <p className="text-lg text-gray-600 text-left mb-4">
+            <h2 className="text-2xl font-semibold mb-6 mt-3">{questions[currentQuestion].question}</h2>
+            <p className="text-lg text-gray-600 text-left mb-6">
                 Question {currentQuestion + 1} out of {questions.length}
             </p>
-            <div className="flex flex-col gap-6 text-left">
+            <div className="flex flex-col gap-8 text-left">
                 {questions[currentQuestion].options.map((option, index) => (
                 <label key={index} className="flex items-center space-x-2 cursor-pointer">
                 <input
