@@ -82,7 +82,7 @@ const AllPetsPageClient = () => {
 // Page component with Suspense
 const AllPetsPage = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 pt-30">
       <FilterButtons />
       <Suspense fallback={
         <div>

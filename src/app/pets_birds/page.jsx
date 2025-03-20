@@ -38,7 +38,7 @@ const BirdsPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 pt-30">
       <h1 className="text-3xl font-bold text-center mb-8">Birds Available for Adoption</h1>
       <FilterButtons />
       <PetGrid pets={pets} />
