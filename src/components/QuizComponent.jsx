@@ -3,18 +3,22 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const QuizComponent = ({ questions }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill(null));
   const [showResults, setShowResults] = useState(false);
+  const [pets, setPets] = useState([]);
+  const router = useRouter();
+
 
   const handleNext = () => {
-    if (selectedAnswers[currentQuestion]) {
+    if (selectedAnswers[currentQuestion] !== null) {
       if (currentQuestion + 1 < questions.length) {
         setCurrentQuestion(currentQuestion + 1);
       } else {
-        setShowResults(true);
+        fetchRecommendedPets();
       }
     }
   };
@@ -31,6 +35,23 @@ const QuizComponent = ({ questions }) => {
     setSelectedAnswers(updatedAnswers);
   };
 
+  const fetchRecommendedPets = async () => {
+    setTimeout(() => {
+      const pets = [
+        { name: 'Buddy', description: ['Friendly and active'], image: '/dog1.png' },
+        { name: 'Luna', description: ['Loves cuddles and naps'], image: '/cat1.png' },
+        { name: 'Charlie', description: ['Great with kids'], image: '/dog2.png' },
+        { name: 'Mittens', description: ['Curious and playful'], image: '/cat2.png' },
+        { name: 'Bella', description: ['Loyal and loving'], image: '/dog3.png' },
+      ];
+  
+      localStorage.setItem('pets', JSON.stringify(pets)); // Store pets in localStorage
+  
+      router.push('/results'); // Navigate to the results page
+    }, 1000);
+  };
+  
+
   return (
     <div className="flex justify-center gap-50">
         <div className="w-1/2 flex justify-center items-center">
@@ -42,36 +63,6 @@ const QuizComponent = ({ questions }) => {
         </div>
 
         <div className="w-[800px] h-[500px] max-w-2xl bg-orange-100 p-10 rounded-xl shadow-md text-center">
-            {showResults ? (
-            <div>
-            <h2 className="text-xl font-semibold mb-4">Recommended Pets</h2>
-            
-            {/* Placeholder for PetFinder API Integration */}
-            <div className="text-gray-500 text-sm mb-4">
-                Pet results will be fetched here based on the quiz answers.
-            </div>
-
-            {/* Example of where API data will be mapped */}
-            <div className="grid grid-cols-1 gap-4">
-                {[
-                { name: "Buddy", breed: "Golden Retriever", age: "2 years", image: "/dog1.png" },
-                { name: "Bella", breed: "Labrador", age: "3 years", image: "/dog2.png" }
-                ].map((pet, index) => (
-                <div key={index} className="p-4 bg-white shadow-md rounded-lg flex items-center gap-4">
-                    <img src={pet.image} alt={pet.name} className="w-16 h-16 object-cover rounded-full" />
-                    <div>
-                    <h3 className="font-semibold">{pet.name}</h3>
-                    <p className="text-sm">{pet.breed} - {pet.age}</p>
-                    </div>
-                </div>
-                ))}
-            </div>
-
-            <Button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white text-md rounded-3xl shadow-2xl" onClick={() => window.location.reload()}>
-                Retake Quiz
-            </Button>
-            </div>
-        ) : (
             <div>
             <h2 className="text-2xl font-semibold mb-6 mt-3">{questions[currentQuestion].question}</h2>
             <p className="text-lg text-gray-600 text-left mb-6">
@@ -115,7 +106,6 @@ const QuizComponent = ({ questions }) => {
                 </Button>
             </div>
             </div>
-        )}
         </div>
     </div>
   );
