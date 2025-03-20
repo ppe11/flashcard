@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 const QuizComponent = ({ questions }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -33,11 +34,11 @@ const QuizComponent = ({ questions }) => {
   return (
     <div className="flex justify-center">
     <div className="w-1/2 flex justify-center items-center">
-      <img 
+    <Image
         src={questions[currentQuestion].image} 
         alt="Pet"
         className="w-60 h-60 object-contain"
-      />
+    />
     </div>
     <div className="w-full max-w-lg bg-orange-100 p-6 rounded-xl shadow-md text-center">
         

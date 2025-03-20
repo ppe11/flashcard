@@ -2,6 +2,7 @@
 
 import React from 'react';
 import QuizComponent from '@/components/QuizComponent';
+import { assets } from '@/assets/assets';
 
 const catQuestions = [
   {
@@ -12,7 +13,7 @@ const catQuestions = [
       { label: "Adult", value: "adult" },
       { label: "Senior", value: "senior" },
     ],
-    image: "/images/space.png",
+    image: assets.cat,
     multiple: true,
     apiKey: "age",
   },

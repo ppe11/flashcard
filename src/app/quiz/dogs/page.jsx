@@ -2,6 +2,7 @@
 
 import React from 'react';
 import QuizComponent from '@/components/QuizComponent';
+import { assets } from '@/assets/assets';
 
 const dogQuestions = [
     {
@@ -12,6 +13,7 @@ const dogQuestions = [
         { label: "Adult", value: "adult" },
         { label: "Senior", value: "senior" },
       ],
+      image: assets.dog,
       multiple: true, 
       apiField: "age",
     },
