@@ -11,14 +11,14 @@ const PetGrid = ({ pets }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
       {pets.pets.map((pet) => (
-        <div key={pet.id} className="rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition duration-600 bg-orange-50">
+        <div key={pet.id} className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition duration-600 bg-orange-50">
           <div className="p-4 flex flex-col items-center">
             <div className="relative h-40 w-full mb-3 flex justify-center mt-4">
               <img
                 src={pet.photos && pet.photos[0]?.medium || '/placeholder-pet.jpg'} 
                 alt={`${pet.name}`}
                 className="h-full object-cover max-w-full"
-                style={{ maxHeight: "160px" }}
+                style={{ maxHeight: "180px" }}
               />
             </div>
             
