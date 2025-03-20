@@ -73,7 +73,7 @@ const QuizComponent = ({ questions }) => {
             </div>
         ) : (
             <div>
-            <h2 className="text-2xl font-semibold mb-4">{questions[currentQuestion].question}</h2>
+            <h2 className="text-2xl font-semibold mb-4 mt-3">{questions[currentQuestion].question}</h2>
             <p className="text-lg text-gray-600 text-left mb-4">
                 Question {currentQuestion + 1} out of {questions.length}
             </p>
