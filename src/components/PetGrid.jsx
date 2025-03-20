@@ -9,11 +9,11 @@ const PetGrid = ({ pets }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
       {pets.pets.map((pet) => (
-        <div key={pet.id} className="bg-[#FEF6EC] rounded-lg overflow-hidden shadow-sm">
+        <div key={pet.id} className="rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition duration-600 bg-orange-50">
           <div className="p-4 flex flex-col items-center">
-            <div className="relative h-40 w-full mb-3 flex justify-center">
+            <div className="relative h-40 w-full mb-3 flex justify-center mt-4">
               <img
                 src={pet.photos && pet.photos[0]?.medium || '/placeholder-pet.jpg'} 
                 alt={`${pet.name}`}
@@ -22,9 +22,9 @@ const PetGrid = ({ pets }) => {
               />
             </div>
             
-            <h3 className="text-center font-semibold text-lg mb-2">{pet.name}</h3>
+            <h3 className="text-center font-semibold text-xl mb-2">{pet.name}</h3>
             
-            <ul className="text-sm w-full">
+            <ul className="text-sm w-full text-center">
               <li>• {pet.breed || 'Mixed breed'}</li>
               <li>• {pet.age || 'Unknown age'}</li>
               {pet.gender && <li>• {pet.gender}</li>}
