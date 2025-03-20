@@ -2,6 +2,7 @@
 
 import React from 'react';
 import QuizComponent from '@/components/QuizComponent';
+import { assets } from '@/assets/assets';
 
 const randomQuestions = [
   {
@@ -11,6 +12,7 @@ const randomQuestions = [
       { label: "Some interaction is nice, but I also want an independent pet", value: ["cats", "smallpets"] },
       { label: "Occasional interaction, but not daily handling", value: ["reptiles", "fish"] },
     ],
+    image: assets.generalpets,
     multiple: false,
     apiKey: "type",
   },
@@ -21,6 +23,7 @@ const randomQuestions = [
       { label: "Regular feeding and cleaning, but minimal training", value: ["smallpets", "fish"] },
       { label: "Low maintenance—feeding and occasional habitat upkeep", value: ["reptiles", "fish"] },
     ],
+    image: assets.generalpets,
     multiple: false,
     apiKey: "type",
   },
@@ -31,6 +34,7 @@ const randomQuestions = [
       { label: "Sometimes—I'd like a pet that can come out occasionally", value: ["smallpets"] },
       { label: "No, I prefer a pet that stays in its enclosure", value: ["reptiles", "fish"] },
     ],
+    image: assets.generalpets,
     multiple: false,
     apiKey: "type",
   },
@@ -42,6 +46,7 @@ const randomQuestions = [
       { label: "A quiet pet that I can observe and enjoy", value: ["fish", "reptiles"] },
       { label: "A small, cute pet that’s fun to watch and sometimes handle", value: ["smallpets"] },
     ],
+    image: assets.generalpets,
     multiple: false,
     apiKey: "type",
   },
@@ -52,6 +57,7 @@ const randomQuestions = [
       { label: "Somewhat important—I don’t mind occasional cleaning but prefer a tidy pet", value: ["reptiles", "fish"] },
       { label: "Not very important—I’m okay with a pet that may require more cleaning", value: ["smallpets"] },
     ],
+    image: assets.generalpets,
     multiple: false,
     apiKey: "type",
   },
