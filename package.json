@@ -13,6 +13,7 @@
     "test:debug": "NODE_ENV=test node --inspect-brk node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.1.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-navigation-menu": "^1.1.4",
@@ -39,6 +40,8 @@
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.0",
     "@types/jest": "^29.5.8",
+    "@types/node": "22.13.10",
+    "@types/react": "18.3.19",
     "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",
     "eslint": "^9",
