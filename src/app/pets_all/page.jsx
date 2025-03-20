@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import PetGrid from '@/components/PetGrid'
 import FilterButtons from '@/components/FilterButtons'
 import { useSearchParams } from 'next/navigation'
 
-const AllPetsPage = () => {
+// Client component that uses useSearchParams
+const AllPetsPageClient = () => {
   const [pets, setPets] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -39,14 +40,13 @@ const AllPetsPage = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div>
         <h1 className="text-3xl font-bold text-center mb-8">
           {type === 'cat' ? 'Cats' : 
           type === 'dog' ? 'Dogs' : 
           type === 'bird' ? 'Birds' : 
           'All Pets'} Available for Adoption
         </h1>
-        <FilterButtons />
         <div className="min-h-[300px] flex items-center justify-center">Loading pets...</div>
       </div>
     )
@@ -54,29 +54,44 @@ const AllPetsPage = () => {
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div>
         <h1 className="text-3xl font-bold text-center mb-8">
           {type === 'cat' ? 'Cats' : 
           type === 'dog' ? 'Dogs' : 
           type === 'bird' ? 'Birds' : 
           'All Pets'} Available for Adoption
         </h1>
-        <FilterButtons />
         <div className="min-h-[300px] flex items-center justify-center text-red-500">Error: {error}</div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div>
       <h1 className="text-3xl font-bold text-center mb-8">
         {type === 'cat' ? 'Cats' : 
          type === 'dog' ? 'Dogs' : 
          type === 'bird' ? 'Birds' : 
          'All Pets'} Available for Adoption
       </h1>
-      <FilterButtons />
       <PetGrid pets={pets} />
+    </div>
+  )
+}
+
+// Page component with Suspense
+const AllPetsPage = () => {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <FilterButtons />
+      <Suspense fallback={
+        <div>
+          <h1 className="text-3xl font-bold text-center mb-8">Pets Available for Adoption</h1>
+          <div className="min-h-[300px] flex items-center justify-center">Loading pets...</div>
+        </div>
+      }>
+        <AllPetsPageClient />
+      </Suspense>
     </div>
   )
 }

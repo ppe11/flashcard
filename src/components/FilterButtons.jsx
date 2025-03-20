@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const FilterButtons = () => {
+// Client component that uses useSearchParams
+const FilterButtonsClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentType = searchParams.get('type') || 'all';
@@ -43,6 +44,22 @@ const FilterButtons = () => {
         Birds
       </button>
     </div>
+  );
+};
+
+// Wrapper component with Suspense
+const FilterButtons = () => {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center gap-2 mb-8">
+        <button className="px-4 py-2 rounded-full bg-[#FEF6EC] text-gray-800">All</button>
+        <button className="px-4 py-2 rounded-full bg-[#FEF6EC] text-gray-800">Cats</button>
+        <button className="px-4 py-2 rounded-full bg-[#FEF6EC] text-gray-800">Dogs</button>
+        <button className="px-4 py-2 rounded-full bg-[#FEF6EC] text-gray-800">Birds</button>
+      </div>
+    }>
+      <FilterButtonsClient />
+    </Suspense>
   );
 };
 
