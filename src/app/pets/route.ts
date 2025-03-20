@@ -88,7 +88,7 @@ export async function GET(request: Request) {
     const breed = searchParams.get('breed') || undefined;
     const age = searchParams.get('age') || undefined;
     const page = searchParams.get('page') || '1';
-    const limit = searchParams.get('limit') || '20';
+    const limit = searchParams.get('limit') || '50';
 
     const queryParams = new URLSearchParams();
     if (type) queryParams.append('type', type);
@@ -97,43 +97,33 @@ export async function GET(request: Request) {
     queryParams.append('page', page);
     queryParams.append('limit', limit);
 
-    const response = await fetch(
-      `https://api.petfinder.com/v2/animals?${queryParams.toString()}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        cache: 'force-cache'
-      }
-    );
+    const response = await fetch(`https://api.petfinder.com/v2/animals?${queryParams.toString()}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch pets: ${response.statusText}`);
-    }
+    if (!response.ok) throw new Error(`Failed to fetch pets: ${response.statusText}`);
 
     const data: PetfinderResponse = await response.json();
 
-    const simplifiedPets: SimplifiedPet[] = data.animals.map((pet) => ({
+    // 🔹 Filter out pets that have no images
+    const petsWithImages = data.animals.filter(pet => pet.photos.length > 0);
+
+    // 🔹 Simplify pet data before sending response
+    const simplifiedPets: SimplifiedPet[] = petsWithImages.map((pet) => ({
       id: pet.id,
       type: pet.type.name,
-      breed: pet.breeds.primary,
+      breed: pet.breeds.primary || "Mixed Breed",
       age: pet.age,
       gender: pet.gender,
       size: pet.size,
       name: pet.name,
-      photos: pet.photos
+      photos: pet.photos,
     }));
 
-    return NextResponse.json({
-      pets: simplifiedPets,
-      pagination: data.pagination,
-    });
+    return NextResponse.json({ pets: simplifiedPets, pagination: data.pagination });
+
   } catch (error) {
     console.error('Error fetching pets:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch pets' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch pets' }, { status: 500 });
   }
 }
