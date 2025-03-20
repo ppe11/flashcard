@@ -9,6 +9,8 @@ import fish_quiz from './fish_quiz.png';
 import general_quiz from './general_quiz.png';
 import reptiles_quiz from './reptiles_quiz.png';
 import smallpets_quiz from './smallpets_quiz.png';
+import dog from './dog.png';
+import cat from './cat.png';
 
 export const assets = {
     icon_paw,
@@ -22,5 +24,6 @@ export const assets = {
     general_quiz,
     reptiles_quiz,
     smallpets_quiz,
-
+    dog,
+    cat,
 };
