@@ -12,6 +12,7 @@ const catQuestions = [
       { label: "Adult", value: "adult" },
       { label: "Senior", value: "senior" },
     ],
+    image: "/images/space.png",
     multiple: true,
     apiKey: "age",
   },

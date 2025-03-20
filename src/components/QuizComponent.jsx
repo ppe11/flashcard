@@ -31,7 +31,16 @@ const QuizComponent = ({ questions }) => {
   };
 
   return (
+    <div className="flex justify-center">
+    <div className="w-1/2 flex justify-center items-center">
+      <img 
+        src={questions[currentQuestion].image} 
+        alt="Pet"
+        className="w-60 h-60 object-contain"
+      />
+    </div>
     <div className="w-full max-w-lg bg-orange-100 p-6 rounded-xl shadow-md text-center">
+        
       {showResults ? (
         <div>
           <h2 className="text-xl font-semibold mb-4">Recommended Pets</h2>
@@ -106,6 +115,7 @@ const QuizComponent = ({ questions }) => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };
