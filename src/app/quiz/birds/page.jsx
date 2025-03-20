@@ -2,6 +2,7 @@
 
 import React from 'react';
 import QuizComponent from '@/components/QuizComponent';
+import { assets } from '@/assets/assets';
 
 const genericQuestions = [
   {
@@ -11,6 +12,7 @@ const genericQuestions = [
       { label: "A medium-sized enclosure", value: "medium" },
       { label: "A large enclosure or free-roaming setup", value: "large" },
     ],
+    image: assets.bird,
     multiple: true,
     apiKey: "size",
   },
@@ -21,6 +23,7 @@ const genericQuestions = [
       { label: "I’d like a pet that is okay with some interaction but doesn’t need constant attention", value: "moderate" },
       { label: "I prefer a pet I can mostly observe rather than handle", value: "observational" },
     ],
+    image: assets.bird,
     multiple: false,
     apiKey: "type",
   },
@@ -31,6 +34,7 @@ const genericQuestions = [
       { label: "I don’t mind moderate daily care and cleaning", value: "moderate-care" },
       { label: "I’m ready for a high-maintenance pet that needs a lot of attention", value: "high-care" },
     ],
+    image: assets.bird,
     multiple: true,
     apiKey: "type",
   },
@@ -41,6 +45,7 @@ const genericQuestions = [
       { label: "5–10 years", value: "medium-lifespan" },
       { label: "10+ years", value: "long-lifespan" },
     ],
+    image: assets.bird,
     multiple: true,
     apiKey: "age",
   },
@@ -52,6 +57,7 @@ const genericQuestions = [
       { label: "Yes, cats", value: "good_with_cats" },
       { label: "No, just me", value: "no_other_pets" },
     ],
+    image: assets.bird,
     multiple: true,
     apiKey: "type",
   },
