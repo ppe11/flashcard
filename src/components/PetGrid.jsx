@@ -1,59 +1,45 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import React from 'react';
+import Link from 'next/link';
 
-/**
- * Replace with API integration
- * Sub API data in appropriate places
- * Automatically updates to all Pets{...} pages
- */
-
-const PetGrid = ({ type }) => {
-  const [pets, setPets] = useState([]);
-
-  useEffect(() => {
-    const placeholderData = {
-      all: [
-        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
-        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' },
-        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
-        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' },
-        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
-        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' },
-        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
-        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' },
-        { name: 'Cat Name #1', description: ['cat’s description #1', 'cat’s description #2'], image: '/cat.png' },
-        { name: 'Dog Name #1', description: ['dog’s description #1', 'dog’s description #2'], image: '/dog.png' }
-      ],
-      cats: Array(5).fill({ name: 'Cat Name', description: ['Loves to sleep', 'Friendly'], image: '/cat.png' }),
-      dogs: Array(5).fill({ name: 'Dog Name', description: ['Loyal companion', 'Energetic'], image: '/dog.png' }),
-      birds: Array(5).fill({ name: 'Bird Name', description: ['Colorful and vibrant', 'Easy to care'], image: '/bird.png' })
-    };
-
-    setPets(placeholderData[type] || []);
-  }, [type]);
+const PetGrid = ({ pets }) => {
+  if (!pets || !pets.pets || pets.pets.length === 0) {
+    return <div className="text-center py-10">No pets found.</div>;
+  }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 py-6 px-16">
-      {pets.map((pet, index) => (
-        <Card key={index} className="shadow-sm hover:shadow-xl transition duration-600 bg-orange-50">
-          <CardHeader className="flex items-center justify-center p-4">
-            <img src={pet.image} alt={pet.name} className="w-32 h-32 object-contain" />
-          </CardHeader>
-          <CardContent className="text-center">
-            <h3 className="text-lg font-semibold">{pet.name}</h3>
-            <ul className="text-sm text-gray-600 mt-2">
-              {pet.description.map((desc, i) => (
-                <li key={i}>• {desc}</li>
-              ))}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {pets.pets.map((pet) => (
+        <div key={pet.id} className="bg-[#FEF6EC] rounded-lg overflow-hidden shadow-sm">
+          <div className="p-4 flex flex-col items-center">
+            <div className="relative h-40 w-full mb-3 flex justify-center">
+              <img
+                src={pet.photos && pet.photos[0]?.medium || '/placeholder-pet.jpg'} 
+                alt={`${pet.name}`}
+                className="h-full object-cover max-w-full"
+                style={{ maxHeight: "160px" }}
+              />
+            </div>
+            
+            <h3 className="text-center font-semibold text-lg mb-2">{pet.name}</h3>
+            
+            <ul className="text-sm w-full">
+              <li>• {pet.breed || 'Mixed breed'}</li>
+              <li>• {pet.age || 'Unknown age'}</li>
+              {pet.gender && <li>• {pet.gender}</li>}
+              {pet.size && <li>• {pet.size}</li>}
+              <li>• Friendly</li>
             </ul>
-          </CardContent>
-          <CardFooter className="flex justify-center p-2 pb-8">
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white text-lg border rounded-3xl p-5">Adopt me!</Button>
-          </CardFooter>
-        </Card>
+            
+            <button 
+              className="mt-4 bg-[#F26A21] hover:bg-[#E05A11] text-white py-2 px-6 rounded-full transition-colors"
+              onClick={() => window.location.href = `/pets/${pet.id}`}
+            >
+              Adopt me!
+            </button>
+          </div>
+        </div>
       ))}
     </div>
   );

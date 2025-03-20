@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+export const dynamic = "force-static"
+export const revalidate = false
 
 type PetfinderAuthResponse = {
   token_type: string;
@@ -19,6 +21,8 @@ type PetfinderPet = {
   };
   age: string;
   name: string;
+  gender: string;
+  size: string;
   photos: Array<{
     small: string;
     medium: string;
@@ -42,6 +46,15 @@ type SimplifiedPet = {
   type: string;
   breed: string;
   age: string;
+  gender: string;
+  size: string;
+  name: string;
+  photos?: Array<{
+    small: string;
+    medium: string;
+    large: string;
+    full: string;
+  }>;
 };
 
 async function getPetfinderToken(): Promise<string> {
@@ -91,6 +104,7 @@ export async function GET(request: Request) {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+        cache: 'force-cache'
       }
     );
 
@@ -105,6 +119,10 @@ export async function GET(request: Request) {
       type: pet.type.name,
       breed: pet.breeds.primary,
       age: pet.age,
+      gender: pet.gender,
+      size: pet.size,
+      name: pet.name,
+      photos: pet.photos
     }));
 
     return NextResponse.json({
