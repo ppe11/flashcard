@@ -1,3 +1,5 @@
+
+import { assets } from '@/assets/assets';
 import { NextResponse } from 'next/server';
 export const dynamic = "force-static"
 export const revalidate = false
@@ -106,10 +108,13 @@ export async function GET(request: Request) {
     const data: PetfinderResponse = await response.json();
 
     // 🔹 Filter out pets that have no images
-    const petsWithImages = data.animals.filter(pet => pet.photos.length > 0);
+    // const petsWithImages = data.animals.filter(pet => pet.photos.length > 0);
+
+    // Fallback png if no pic is loaded
+    // const fallBackPic = '/src/assets/generalpets.png';
 
     // 🔹 Simplify pet data before sending response
-    const simplifiedPets: SimplifiedPet[] = petsWithImages.map((pet) => ({
+    const simplifiedPets: SimplifiedPet[] = data.animals.map((pet) => ({
       id: pet.id,
       type: pet.type.name,
       breed: pet.breeds.primary || "Mixed Breed",
