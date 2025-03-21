@@ -43,6 +43,18 @@ const FilterButtonsClient = () => {
       >
         Birds
       </button>
+      <button 
+        className={`px-4 py-2 rounded-full ${currentType === 'bird' ? 'bg-[#F26A21] text-white' : 'bg-[#FEF6EC] text-gray-800'}`}
+        onClick={() => handleFilterClick('bird')}
+      >
+        Small Pets
+      </button>
+      <button 
+        className={`px-4 py-2 rounded-full ${currentType === 'bird' ? 'bg-[#F26A21] text-white' : 'bg-[#FEF6EC] text-gray-800'}`}
+        onClick={() => handleFilterClick('bird')}
+      >
+        Reptiles
+      </button>
     </div>
   );
 };
@@ -56,6 +68,8 @@ const FilterButtons = () => {
         <button className="px-4 py-2 rounded-full bg-[#FEF6EC] text-gray-800">Cats</button>
         <button className="px-4 py-2 rounded-full bg-[#FEF6EC] text-gray-800">Dogs</button>
         <button className="px-4 py-2 rounded-full bg-[#FEF6EC] text-gray-800">Birds</button>
+        <button className="px-4 py-2 rounded-full bg-[#FEF6EC] text-gray-800">Small Pets</button>
+        <button className="px-4 py-2 rounded-full bg-[#FEF6EC] text-gray-800">Reptiles</button>
       </div>
     }>
       <FilterButtonsClient />
