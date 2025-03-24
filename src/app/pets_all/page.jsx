@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useEffect, useState, Suspense } from 'react'
-import PetGrid from '@/components/PetGrid'
-import FilterButtons from '@/components/FilterButtons'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import PetGrid from '../../components/PetGrid'
+import FilterButtons from '../../components/FilterButtons'
 
-// Client component that uses useSearchParams
 const AllPetsPageClient = () => {
   const [pets, setPets] = useState([])
   const [loading, setLoading] = useState(true)
@@ -14,86 +13,64 @@ const AllPetsPageClient = () => {
   const type = searchParams.get('type')
 
   useEffect(() => {
-    const fetchPets = async () => {
+    async function fetchPets() {
+      setLoading(true)
+      setError(null)
+      
       try {
-        setLoading(true)
-        const url = type && type !== 'all' 
-          ? `/pets?type=${type}` 
-          : '/pets'
+        // Build the URL with the type parameter if it exists
+        const url = type ? `/pets?type=${encodeURIComponent(type)}` : '/pets'
+        console.log(`Fetching pets from: ${url}`)
         
         const response = await fetch(url)
         if (!response.ok) {
-          throw new Error(`Failed to fetch pets${type ? ' of type ' + type : ''}`)
+          throw new Error(`HTTP error! Status: ${response.status}`)
         }
+        
         const data = await response.json()
-        setPets(data)
-      } catch (error) {
-        console.error('Error fetching pets:', error)
-        setError(error.message)
+        console.log('Fetched data:', { 
+          petCount: data.pets?.length || 0, 
+          pagination: data.pagination,
+          firstPet: data.pets && data.pets.length > 0 ? data.pets[0] : 'No pets found'
+        })
+        
+        if (data.pets && Array.isArray(data.pets)) {
+          setPets(data.pets)
+        } else {
+          console.error('Invalid pets data format:', data)
+          setPets([])
+        }
+      } catch (err) {
+        console.error('Error fetching pets:', err)
+        setError(err.message)
+        setPets([])
       } finally {
         setLoading(false)
       }
     }
 
     fetchPets()
-  }, [type])
-
-  if (loading) {
-    return (
-      <div>
-        <h1 className="text-3xl font-bold text-center mb-8">
-          {type === 'cat' ? 'Cats' : 
-          type === 'dog' ? 'Dogs' : 
-          type === 'bird' ? 'Birds' : 
-          'All Pets'} Available for Adoption
-        </h1>
-        <div className="min-h-[300px] flex items-center justify-center">Loading pets...</div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div>
-        <h1 className="text-3xl font-bold text-center mb-8">
-          {type === 'cat' ? 'Cats' : 
-          type === 'dog' ? 'Dogs' : 
-          type === 'bird' ? 'Birds' : 
-          'All Pets'} Available for Adoption
-        </h1>
-        <div className="min-h-[300px] flex items-center justify-center text-red-500">Error: {error}</div>
-      </div>
-    )
-  }
+  }, [type]) // Re-fetch when type changes
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-center mb-8">
-        {type === 'cat' ? 'Cats' : 
-         type === 'dog' ? 'Dogs' : 
-         type === 'bird' ? 'Birds' : 
-         'All Pets'} Available for Adoption
+    <div className="pt-16 pb-24 w-full max-w-screen-xl mx-auto px-4">
+      <h1 className="text-3xl font-bold text-center my-8">
+        {type ? `${type.charAt(0).toUpperCase() + type.slice(1)} Pets Available for Adoption` : 'All Pets Available for Adoption'}
       </h1>
-      <PetGrid pets={pets} />
-    </div>
-  )
-}
-
-// Page component with Suspense
-const AllPetsPage = () => {
-  return (
-    <div className="container mx-auto px-4 py-8 pt-30">
-      <FilterButtons />
-      <Suspense fallback={
-        <div>
-          <h1 className="text-3xl font-bold text-center mb-8">Pets Available for Adoption</h1>
-          <div className="min-h-[300px] flex items-center justify-center">Loading pets...</div>
+      
+      <FilterButtons activeType={type || 'all'} />
+      
+      {loading ? (
+        <div className="text-center py-10">Loading pets...</div>
+      ) : error ? (
+        <div className="text-center py-10 text-red-500">
+          Error: {error}
         </div>
-      }>
-        <AllPetsPageClient />
-      </Suspense>
+      ) : (
+        <PetGrid pets={pets} />
+      )}
     </div>
   )
 }
 
-export default AllPetsPage
+export default AllPetsPageClient

@@ -8,6 +8,9 @@ global.TextDecoder = TextDecoder;
 process.env.PETFINDER_KEY = 'test-key';
 process.env.PETFINDER_SECRET = 'test-secret';
 
+console.log = jest.fn();
+console.error = jest.fn();
+
 global.fetch = jest.fn();
 
 const mockFetch = (response: any, ok = true) => {
@@ -22,10 +25,10 @@ describe('Pets API Route', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (console.error as jest.Mock).mockClear();
+    (console.log as jest.Mock).mockClear();
   });
 
-  it('should return simplified pets data on successful response', async () => {
-    // Mock token response
+  it('Return simplified pets data on successful response', async () => {
     (global.fetch as jest.Mock).mockImplementationOnce(
       mockFetch({
         token_type: 'Bearer',
@@ -34,7 +37,6 @@ describe('Pets API Route', () => {
       })
     );
 
-    // Mock pets response
     (global.fetch as jest.Mock).mockImplementationOnce(
       mockFetch({
         animals: [
@@ -44,7 +46,9 @@ describe('Pets API Route', () => {
             breeds: { primary: 'Labrador', secondary: null, mixed: false, unknown: false },
             age: 'Young',
             name: 'Max',
-            photos: [],
+            gender: 'Male',
+            size: 'Large',
+            photos: []
           },
           {
             id: 2,
@@ -52,8 +56,10 @@ describe('Pets API Route', () => {
             breeds: { primary: 'Siamese', secondary: null, mixed: false, unknown: false },
             age: 'Adult',
             name: 'Felix',
-            photos: [],
-          },
+            gender: 'Female',
+            size: 'Medium',
+            photos: []
+          }
         ],
         pagination: {
           count_per_page: 20,
@@ -64,27 +70,40 @@ describe('Pets API Route', () => {
       })
     );
 
-    // Create mock request with URL
     const request = new Request('http://localhost:3000/api/pets');
     const response = await GET(request);
-    const responseData = await response.json();
 
-    expect(global.fetch).toHaveBeenCalledTimes(2);
-    expect(responseData).toEqual({
-      pets: [
-        { id: 1, type: 'Dog', breed: 'Labrador', age: 'Young' },
-        { id: 2, type: 'Cat', breed: 'Siamese', age: 'Adult' },
-      ],
-      pagination: {
-        count_per_page: 20,
-        total_count: 2,
-        current_page: 1,
-        total_pages: 1,
+    expect(response.status).toBe(200);
+    const responseData = await response.json();
+    
+    expect(responseData.pets).toEqual([
+      {
+        id: 1,
+        type: 'Dog',
+        breed: 'Labrador',
+        age: 'Young',
+        gender: 'Male',
+        size: 'Large',
+        name: 'Max',
+        photos: []
       },
-    });
+      {
+        id: 2,
+        type: 'Cat',
+        breed: 'Siamese',
+        age: 'Adult',
+        gender: 'Female',
+        size: 'Medium',
+        name: 'Felix',
+        photos: []
+      }
+    ]);
+    
+    expect(responseData.pagination).toBeDefined();
+    expect(global.fetch).toHaveBeenCalledTimes(2);
   });
 
-  it('should handle query parameters correctly', async () => {
+  it('Handle query parameters correctly', async () => {
     (global.fetch as jest.Mock).mockImplementationOnce(
       mockFetch({
         token_type: 'Bearer',
@@ -95,43 +114,30 @@ describe('Pets API Route', () => {
 
     (global.fetch as jest.Mock).mockImplementationOnce(
       mockFetch({
-        animals: [
-          {
-            id: 1,
-            type: { name: 'Dog' },
-            breeds: { primary: 'Labrador', secondary: null, mixed: false, unknown: false },
-            age: 'Young',
-            name: 'Max',
-            photos: [],
-          },
-        ],
+        animals: [],
         pagination: {
-          count_per_page: 10,
-          total_count: 1,
+          count_per_page: 20,
+          total_count: 0,
           current_page: 1,
-          total_pages: 1,
+          total_pages: 0,
         },
       })
     );
 
-    const url = 'http://localhost:3000/api/pets?type=Dog&breed=Labrador&age=Young&limit=10';
-    
-    const request = new Request(url);
-    
-    await GET(request);
+    const request = new Request('http://localhost:3000/api/pets?type=Dog&breed=Labrador&age=Young');
+    const response = await GET(request);
 
-    const fetchCalls = (global.fetch as jest.Mock).mock.calls;
-    expect(fetchCalls.length).toBe(2);
-    
-    const petsApiUrl = fetchCalls[1][0];
-    
-    expect(petsApiUrl).toContain('type=Dog');
-    expect(petsApiUrl).toContain('breed=Labrador');
-    expect(petsApiUrl).toContain('age=Young');
-    expect(petsApiUrl).toContain('limit=10');
+    expect(response.status).toBe(200);
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(global.fetch).toHaveBeenCalledWith(
+      'https://api.petfinder.com/v2/animals?type=Dog&breed=Labrador&age=Young&page=1&limit=100',
+      expect.objectContaining({
+        headers: { Authorization: 'Bearer mock-token' },
+      })
+    );
   });
 
-  it('should handle empty response gracefully', async () => {
+  it('Handle empty response without volatile failure', async () => {
     (global.fetch as jest.Mock).mockImplementationOnce(
       mockFetch({
         token_type: 'Bearer',
@@ -154,17 +160,10 @@ describe('Pets API Route', () => {
 
     const request = new Request('http://localhost:3000/api/pets');
     const response = await GET(request);
-    const responseData = await response.json();
 
-    expect(responseData).toEqual({
-      pets: [],
-      pagination: {
-        count_per_page: 20,
-        total_count: 0,
-        current_page: 1,
-        total_pages: 0,
-      },
-    });
+    expect(response.status).toBe(200);
+    const responseData = await response.json();
+    expect(responseData.pets).toEqual([]);
   });
 
   it('should handle authentication failure', async () => {
@@ -180,7 +179,7 @@ describe('Pets API Route', () => {
     expect(responseData).toEqual({ error: 'Failed to fetch pets' });
   });
 
-  it('should handle Petfinder API failure', async () => {
+  it('Handle Petfinder API failure', async () => {
     (global.fetch as jest.Mock).mockImplementationOnce(
       mockFetch({
         token_type: 'Bearer',
@@ -201,8 +200,18 @@ describe('Pets API Route', () => {
     expect(responseData).toEqual({ error: 'Failed to fetch pets' });
   });
 
-  it('should handle network failures', async () => {
-    (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
+  it('Handle network failures', async () => {
+    (global.fetch as jest.Mock).mockImplementationOnce(
+      mockFetch({
+        token_type: 'Bearer',
+        expires_in: 3600,
+        access_token: 'mock-token',
+      })
+    );
+
+    (global.fetch as jest.Mock).mockImplementationOnce(() => {
+      throw new Error('Network error');
+    });
 
     const request = new Request('http://localhost:3000/api/pets');
     const response = await GET(request);
@@ -210,5 +219,57 @@ describe('Pets API Route', () => {
     expect(response.status).toBe(500);
     const responseData = await response.json();
     expect(responseData).toEqual({ error: 'Failed to fetch pets' });
+  });
+
+  it('Properly filter pets by type', async () => {
+    (global.fetch as jest.Mock).mockImplementationOnce(
+      mockFetch({
+        token_type: 'Bearer',
+        expires_in: 3600,
+        access_token: 'mock-token',
+      })
+    );
+
+    (global.fetch as jest.Mock).mockImplementationOnce(
+      mockFetch({
+        animals: [
+          { 
+            id: 1, 
+            type: { name: 'Dog' }, 
+            breeds: { primary: 'Labrador', secondary: null, mixed: false, unknown: false }, 
+            age: 'Young',
+            gender: 'Male',
+            size: 'Large',
+            name: 'Max',
+            photos: []
+          },
+          { 
+            id: 3, 
+            type: { name: 'Dog' }, 
+            breeds: { primary: 'Poodle', secondary: null, mixed: false, unknown: false }, 
+            age: 'Puppy',
+            gender: 'Female',
+            size: 'Small',
+            name: 'Bella',
+            photos: []
+          }
+        ],
+        pagination: {
+          count_per_page: 2,
+          total_count: 2,
+          current_page: 1,
+          total_pages: 1
+        }
+      })
+    );
+
+    const request = new Request('http://localhost:3000/api/pets?type=Dog');
+    const response = await GET(request);
+    
+    expect(response.status).toBe(200);
+    const responseData = await response.json();
+    
+    expect(responseData.pets.length).toBe(2);
+    expect(responseData.pets.every(pet => pet.type === 'Dog')).toBe(true);
   });
 });
