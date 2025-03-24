@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
+import {Suspense} from 'react';
 
 
 
@@ -29,7 +29,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
        <Navbar/>
+       <Suspense fallback={<div>Loading...</div>}>
        <main className="flex-grow">{children}</main>
+       </Suspense>
         <Footer/>
       </body>
     </html>
