@@ -8,13 +8,13 @@ const Navbar = () => {
     px-5 lg:px-8 xl:px-[8%] py-4 flex items-center bg-orange-50 text-gray-900 shadow-md h-2/23 ">
 
         <div className="flex items-center pr-20 ">
-            <a href="/landing">
+            <a href="/">
                 <Image src={assets.icon_paw} alt="Paw" />
             </a>
         </div>
 
         <ul className={`flex items-center gap-22 rounded-full  py-3 text-2xl pl-5 `}>
-                <li><a href="/landing" className='hover:text-orange-500 transition duration-150' >Home</a></li>
+                <li><a href="/" className='hover:text-orange-500 transition duration-150' >Home</a></li>
                 <li><a href="/shelters" className='hover:text-orange-500 transition duration-150'>Shelters</a></li>
                 <li><a href="/quiz" className='hover:text-orange-500 transition duration-150'>Quiz</a></li>
                 <li><a href="/pets_all" className='hover:text-orange-500 transition duration-150'>Pets</a></li>

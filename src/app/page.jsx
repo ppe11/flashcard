@@ -11,7 +11,7 @@ const LandingPage = () => {
       <div className='flex w-full flex-col lg:flex-row items-center gap-24 mx-auto'>
         <div className='lg:w-5/9 w-full flex flex-col items-center text-center space-y-6'>
           <h2 className='text-3xl md:text-5xl font-bold text-[#0D0D46]'>
-            Find Your Perfect Pet Match
+            Find Your Purrfect Pet Match
           </h2>
 
           <p className='text-base sm:text-xl text-gray-700 max-w-2xl leading-relaxed mt-3'>

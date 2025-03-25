@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row lg:mt-[-20px]">
           {/* Left - Paw Icon */}
           <div className="mb-4 md:mb-0 mt-10 mr-100">
-            <a href="/landing" className="flex items-center">
+            <a href="/" className="flex items-center">
               <Image src={assets.icon_paw} alt="Paw" width={40} height={40} />
             </a>
           </div>
@@ -20,7 +20,7 @@ const Footer = () => {
             <div className="text-center md:text-left text-sm ">
               <h3 className="font-bold">Company</h3>
               <ul className="mt-2 space-y-1 text-gray-700">
-                <li><a href="/landing" className="hover:underline">About us</a></li>
+                <li><a href="/" className="hover:underline">About us</a></li>
                 <li><a href="#" className="hover:underline">FAQ</a></li>
                 <li><a href="/contact" className="hover:underline">Contact</a></li>
               </ul>
