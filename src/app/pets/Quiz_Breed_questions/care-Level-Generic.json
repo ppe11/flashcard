@@ -1,0 +1,169 @@
+{
+  "care_level": {
+    "bird_breeds": {
+      "low": [
+        "Canary",
+        "Finch",
+        "Budgie / Budgerigar",
+        "Dove",
+        "Pigeon",
+        "Button-Quail",
+        "Quail"
+      ],
+      "medium": [
+        "Cockatiel",
+        "Conure",
+        "Lovebird",
+        "Parrotlet",
+        "Kakariki",
+        "Rosella",
+        "Brotogeris",
+        "Pionus",
+        "Poicephalus / Senegal",
+        "Quaker Parakeet"
+      ],
+      "high": [
+        "African Grey",
+        "Amazon",
+        "Caique",
+        "Cockatoo",
+        "Eclectus",
+        "Lory / Lorikeet",
+        "Macaw",
+        "Chicken",
+        "Duck",
+        "Emu",
+        "Goose",
+        "Guinea Fowl",
+        "Ostrich",
+        "Parakeet (Other)",
+        "Parrot (Other)",
+        "Peacock / Peafowl",
+        "Pheasant",
+        "Rhea",
+        "Ringneck / Psittacula",
+        "Swan",
+        "Toucan",
+        "Turkey"
+      ]
+    },
+    "small_furry_rabbit_breeds": {
+      "low": [
+        "Gerbil",
+        "Mouse"
+      ],
+      "medium": [
+        "Hamster",
+        "Guinea Pig",
+        "Rat",
+        "American",
+        "American Fuzzy Lop",
+        "American Sable",
+        "Angora Rabbit",
+        "Belgian Hare",
+        "Beveren",
+        "Britannia Petite",
+        "Bunny Rabbit",
+        "Californian",
+        "Champagne D'Argent",
+        "Checkered Giant",
+        "Chinchilla",
+        "Cinnamon",
+        "Creme D'Argent",
+        "Dutch",
+        "Dwarf",
+        "Dwarf Eared",
+        "English Lop",
+        "English Spot",
+        "Flemish Giant",
+        "Florida White",
+        "French Lop",
+        "Harlequin",
+        "Havana",
+        "Himalayan",
+        "Holland Lop",
+        "Hotot",
+        "Jersey Wooly",
+        "Lilac",
+        "Lionhead",
+        "Lop Eared",
+        "Mini Lop",
+        "Mini Rex",
+        "Netherland Dwarf",
+        "New Zealand",
+        "Palomino",
+        "Polish",
+        "Rex",
+        "Rhinelander",
+        "Satin",
+        "Silver",
+        "Silver Fox",
+        "Silver Marten",
+        "Tan",
+        "Degu"
+      ],
+      "high": [
+        "Ferret",
+        "Hedgehog",
+        "Prairie Dog",
+        "Skunk",
+        "Sugar Glider",
+        "Abyssinian",
+        "Teddy"
+      ]
+    },
+    "fish_breeds": {
+      "low": [
+        "Goldfish"
+      ],
+      "medium": [
+        "Freshwater Fish"
+      ],
+      "high": [
+        "Saltwater Fish"
+      ]
+    },
+    "reptile_breeds": {
+      "low": [
+        "Leopard",
+        "Corn / Rat"
+      ],
+      "medium": [
+        "Ball Python",
+        "King / Milk",
+        "Bearded Dragon",
+        "Asian Box",
+        "Box",
+        "Eastern Box",
+        "Florida Box",
+        "Mississippi Map Turtle",
+        "Mud",
+        "Musk",
+        "Ornamental Box",
+        "Painted",
+        "Red-Eared Slider",
+        "Southern",
+        "Three-Toed Box"
+      ],
+      "high": [
+        "Boa",
+        "Boa Constrictor",
+        "Burmese Python",
+        "Python",
+        "Iguana",
+        "Chameleon",
+        "Monitor",
+        "Gecko",
+        "Uromastyx",
+        "Russian",
+        "Red Foot",
+        "Sulcata",
+        "Snapping",
+        "Soft Shell",
+        "Tortoise",
+        "Turtle",
+        "Water Dragon"
+      ]
+    }
+  }
+}
