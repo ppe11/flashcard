@@ -52,23 +52,33 @@ const FilterButtons = () => {
         Birds
       </button>
       <button 
-        className={`px-4 py-2 rounded-full ${currentType === 'small-furry' && currentType === 'rabbit' ? 'bg-[#F26A21] text-white' : 'bg-[#FEF6EC] text-gray-800'}`}
+        className={`px-4 py-2 rounded-full ${currentType === 'small-furry' ? 'bg-[#F26A21] text-white' : 'bg-[#FEF6EC] text-gray-800'}`}
         onClick={() => handleFilterClick('small-furry')}
       >
         Small Pets
       </button>
       <button 
-        className={`px-4 py-2 rounded-full ${currentType === 'scales-fins-other' ? 'bg-[#F26A21] text-white' : 'bg-[#FEF6EC] text-gray-800'}`}
-        onClick={() => handleFilterClick('scales-fins-other')}
+      className={`px-4 py-2 rounded-full ${
+        currentType === 'scales-fins-other' && searchParams.get('fish') !== 'true'
+          ? 'bg-[#F26A21] text-white'
+          : 'bg-[#FEF6EC] text-gray-800'
+      }`}
+      onClick={() => router.push('/pets_all?type=scales-fins-other')}
       >
         Reptiles
       </button>
+
       <button 
-        className={`px-4 py-2 rounded-full ${currentType === 'scales-fins-other' ? 'bg-[#F26A21] text-white' : 'bg-[#FEF6EC] text-gray-800'}`}
-        onClick={() => handleFilterClick('scales-fins-other')}
+        className={`px-4 py-2 rounded-full ${
+          currentType === 'scales-fins-other' && searchParams.get('fish') === 'true'
+            ? 'bg-[#F26A21] text-white'
+            : 'bg-[#FEF6EC] text-gray-800'
+        }`}
+        onClick={() => router.push('/pets_all?type=scales-fins-other&fish=true')}
       >
         Fish
       </button>
+
     </div>
   );
 };
