@@ -68,7 +68,7 @@ const catQuestions = [
 const QuizCats = () => {
     return (
     <div className="flex justify-center items-center min-h-screen bg-orange-50 p-6">
-        <QuizComponent questions={catQuestions} />
+        <QuizComponent questions={catQuestions} type="cat"/>
     </div>
     );
   };
