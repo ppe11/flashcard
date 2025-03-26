@@ -11,6 +11,7 @@ const AllPetsPageClient = () => {
   const [error, setError] = useState(null)
   const searchParams = useSearchParams()
   const type = searchParams.get('type')
+  const subType = searchParams.get('subType')
 
   useEffect(() => {
     async function fetchPets() {
@@ -18,8 +19,17 @@ const AllPetsPageClient = () => {
       setError(null)
       
       try {
-        // Build the URL with the type parameter if it exists
-        const url = type ? `/pets?type=${encodeURIComponent(type)}` : '/pets'
+        // Build the URL with the type and subType parameters if they exist
+        let url = '/pets'
+        const queryParams = new URLSearchParams()
+        
+        if (type) queryParams.set('type', type)
+        if (subType) queryParams.set('subType', subType)
+        
+        if (queryParams.toString()) {
+          url += `?${queryParams.toString()}`
+        }
+        
         console.log(`Fetching pets from: ${url}`)
         
         const response = await fetch(url)
@@ -50,12 +60,25 @@ const AllPetsPageClient = () => {
     }
 
     fetchPets()
-  }, [type]) // Re-fetch when type changes
+  }, [type, subType]) // Re-fetch when type or subType changes
+
+  // Determine page title based on type and subType
+  let pageTitle = 'All Pets Available for Adoption'
+  
+  if (type) {
+    if (type === 'scales-fins-other' && subType) {
+      pageTitle = `${subType.charAt(0).toUpperCase() + subType.slice(1)}es Available for Adoption`
+    } else {
+      // Capitalize and pluralize the type for the title
+      const typeName = type.charAt(0).toUpperCase() + type.slice(1)
+      pageTitle = `${typeName}s Available for Adoption`
+    }
+  }
 
   return (
     <div className="pt-16 pb-24 w-full max-w-screen-xl mx-auto px-4">
       <h1 className="text-3xl font-bold text-center my-8">
-        {type ? `${type.charAt(0).toUpperCase() + type.slice(1)}s Available for Adoption` : 'All Pets Available for Adoption'}
+        {pageTitle}
       </h1>
       
       <FilterButtons activeType={type || 'all'} />

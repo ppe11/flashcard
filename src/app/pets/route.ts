@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import breeds from './Quiz_Breed_questions/Bird-Small-Fish-Reptile-Breeds.json';
 export const dynamic = "force-dynamic" 
 export const revalidate = 0
 
@@ -93,75 +94,132 @@ export async function GET(request: Request) {
     const url = new URL(request.url);
     const { searchParams } = url;
     const type = searchParams.get('type') || undefined;
+    const subType = searchParams.get('subType') || undefined;
     const breed = searchParams.get('breed') || undefined;
     const age = searchParams.get('age') || undefined;
     const page = searchParams.get('page') || '1';
     const limit = searchParams.get('limit') || '100';
 
-    const queryParams = new URLSearchParams();
-    if (type) queryParams.append('type', type);
-    if (breed) queryParams.append('breed', breed);
-    if (age) queryParams.append('age', age);
-    queryParams.append('page', page);
-    queryParams.append('limit', limit);
+    let animals: PetfinderPet[] = [];
+    let pagination = {
+      count_per_page: 0,
+      total_count: 0,
+      current_page: 1,
+      total_pages: 1
+    };
 
-    // Log the API request for debugging
-    console.log(`Fetching from Petfinder API with params: ${queryParams.toString()}`);
-
-    let response;
     try {
-      response = await fetch(`https://api.petfinder.com/v2/animals?${queryParams.toString()}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        cache: 'no-store'
-      });
-    } catch (fetchError) {
-      console.error('Network error fetching pets:', fetchError);
-      // For tests, return a 500 error
-      return NextResponse.json({ error: 'Failed to fetch pets' }, { status: 500 });
-    }
+      // Handle reptile/fish breed filtering differently
+      if (type === 'scales-fins-other' && subType) {
+        const breedList = subType === 'reptile' 
+          ? breeds.reptile_breeds 
+          : breeds.fish_breeds;
+        
+        console.log(`Fetching ${subType} with breeds:`, breedList);
+        
+        // Make separate requests for each breed and combine results
+        if (breedList && breedList.length > 0) {
+          for (const singleBreed of breedList) {
+            const queryParams = new URLSearchParams();
+            queryParams.append('type', type);
+            queryParams.append('breed', singleBreed);
+            if (age) queryParams.append('age', age);
+            queryParams.append('page', page);
+            queryParams.append('limit', limit);
 
-    if (!response.ok) {
-      console.error(`API responded with status: ${response.status} - ${response.statusText}`);
-      // For tests, return a 500 error
-      return NextResponse.json({ error: 'Failed to fetch pets' }, { status: 500 });
-    }
+            console.log(`Fetching ${singleBreed} with params: ${queryParams.toString()}`);
+            
+            const response = await fetch(`https://api.petfinder.com/v2/animals?${queryParams.toString()}`, {
+              headers: { Authorization: `Bearer ${token}` },
+              cache: 'no-store'
+            });
 
-    const data: PetfinderResponse = await response.json();
-    
-    // Log the raw API response to see what we're getting
-    console.log('Raw API response data:', JSON.stringify(data.animals.slice(0, 2), null, 2));
+            if (!response.ok) {
+              console.error(`Failed to fetch ${singleBreed}: ${response.statusText}`);
+              continue;
+            }
 
-    // Simplify pet data before sending response
-    const simplifiedPets: SimplifiedPet[] = data.animals.map((pet) => {
-      // Handle the type object with name property correctly
-      const petType = pet.type && pet.type.name ? pet.type.name : '';
-      
-      // When debugging, log each pet's photos
-      if (pet.photos && pet.photos.length > 0) {
-        console.log(`Pet ${pet.id} has ${pet.photos.length} photos. First photo medium URL: ${pet.photos[0]?.medium || 'undefined'}`);
+            const data: PetfinderResponse = await response.json();
+            animals = [...animals, ...data.animals];
+            // Update pagination with the last successful response
+            pagination = data.pagination;
+          }
+        }
       } else {
-        console.log(`Pet ${pet.id} has no photos`);
-      }
-      
-      return {
-        id: pet.id,
-        type: petType,
-        breed: pet.breeds?.primary || "Unknown",
-        age: pet.age || "Unknown",
-        gender: pet.gender || "Unknown",
-        size: pet.size || "Unknown",
-        name: pet.name || `Pet ${pet.id}`,
-        photos: pet.photos,
-      };
-    });
+        // Normal filtering for other types
+        const queryParams = new URLSearchParams();
+        if (type) queryParams.append('type', type);
+        if (breed) queryParams.append('breed', breed);
+        if (age) queryParams.append('age', age);
+        queryParams.append('page', page);
+        queryParams.append('limit', limit);
 
-    // Just return all pets without filtering for photos now
-    console.log(`Total pets after simplification: ${simplifiedPets.length}`);
+        console.log(`Fetching with params: ${queryParams.toString()}`);
+        
+        const response = await fetch(`https://api.petfinder.com/v2/animals?${queryParams.toString()}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          cache: 'no-store'
+        });
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.statusText}`);
+        }
+
+        const data: PetfinderResponse = await response.json();
+        animals = data.animals;
+        pagination = data.pagination;
+      }
+
+      // Log the raw API response to see what we're getting
+      console.log('Total animals fetched:', animals.length);
+      console.log('Sample animals:', JSON.stringify(animals.slice(0, 2), null, 2));
+
+      // Use a Map to deduplicate pets by ID
+      const uniquePetsMap = new Map<number, SimplifiedPet>();
+      
+      // Simplify pet data before sending response
+      animals.forEach((pet) => {
+        // Skip if we already have this pet ID
+        if (uniquePetsMap.has(pet.id)) {
+          return;
+        }
+        
+        // Handle the type object with name property correctly
+        const petType = pet.type && pet.type.name ? pet.type.name : '';
+        
+        // When debugging, log each pet's photos
+        if (pet.photos && pet.photos.length > 0) {
+          console.log(`Pet ${pet.id} has ${pet.photos.length} photos. First photo medium URL: ${pet.photos[0]?.medium || 'undefined'}`);
+        } else {
+          console.log(`Pet ${pet.id} has no photos`);
+        }
+        
+        uniquePetsMap.set(pet.id, {
+          id: pet.id,
+          type: petType,
+          breed: pet.breeds?.primary || "Unknown",
+          age: pet.age || "Unknown",
+          gender: pet.gender || "Unknown",
+          size: pet.size || "Unknown",
+          name: pet.name || `Pet ${pet.id}`,
+          photos: pet.photos,
+        });
+      });
+
+      // Convert the Map to an array
+      const simplifiedPets = Array.from(uniquePetsMap.values());
+
+      // Just return all pets without filtering for photos now
+      console.log(`Total pets after simplification and deduplication: ${simplifiedPets.length}`);
     
-    return NextResponse.json({ 
-      pets: simplifiedPets, 
-      pagination: data.pagination 
-    });
+      return NextResponse.json({ 
+        pets: simplifiedPets,
+        pagination: pagination
+      });
+    } catch (error) {
+      console.error('Error fetching pets:', error);
+      return NextResponse.json({ error: 'Failed to fetch pets' }, { status: 500 });
+    }
 
   } catch (error) {
     console.error('Error fetching pets:', error);
