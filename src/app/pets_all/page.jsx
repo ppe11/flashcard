@@ -55,7 +55,7 @@ const AllPetsPageClient = () => {
   return (
     <div className="pt-16 pb-24 w-full max-w-screen-xl mx-auto px-4">
       <h1 className="text-3xl font-bold text-center my-8">
-        {type ? `${type.charAt(0).toUpperCase() + type.slice(1)} Pets Available for Adoption` : 'All Pets Available for Adoption'}
+        {type ? `${type.charAt(0).toUpperCase() + type.slice(1)}s Available for Adoption` : 'All Pets Available for Adoption'}
       </h1>
       
       <FilterButtons activeType={type || 'all'} />
