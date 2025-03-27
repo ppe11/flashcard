@@ -168,9 +168,8 @@ const QuizComponent = ({ questions, type, isLetUsDecide }) => {
       const answer = selectedAnswers[index];
       if (!key || !answer) return;
   
-      const skipKeys = ['tags', 'coat', 'breed', 'good_with'];
+      const skipKeys = ['tags', 'coat', 'breed', 'good_with',];
   
-      // Skip 'age' too for non-cat/dog types
       if (['bird', 'fish', 'reptile', 'small-furry'].includes(type)) {
         skipKeys.push('age','size');
       }
@@ -190,8 +189,11 @@ const QuizComponent = ({ questions, type, isLetUsDecide }) => {
     });
   
     return Object.entries(query)
-      .map(([k, v]) => `${k}=${Array.isArray(v) ? v.join(',') : v}`)
-      .join('&');
+    .flatMap(([k, v]) =>
+      Array.isArray(v) ? v.map(val => `${k}=${encodeURIComponent(val)}`) : [`${k}=${encodeURIComponent(v)}`]
+    )
+    .join('&');
+  
   };
   
 
@@ -219,20 +221,48 @@ const QuizComponent = ({ questions, type, isLetUsDecide }) => {
     };
   
     const actualType = petfinderTypeMap[chosenType] || chosenType;
+    let allPets = [];
   
     try {
-      let res = await fetch(`/pets?type=${actualType}&${query}`);
-      let data = await res.json();
+      // Check if query has multiple ages
+      if (query.includes('age=')) {
+        const ageMatch = query.match(/age=([^&]*)/);
+        const ageValues = ageMatch ? ageMatch[1].split(',') : [];
   
-      if (!data?.pets?.length) {
-        console.warn('No exact match. Retrying with relaxed filters...');
-        const relaxedQuery = buildRelaxedQuery();
-        res = await fetch(`/pets?type=${actualType}&${relaxedQuery}`);
-        data = await res.json();
+        // If multiple ages, loop through each and fetch pets
+        for (const age of ageValues) {
+          const modifiedQuery = query.replace(/age=([^&]*)/, `age=${age}`);
+          const res = await fetch(`/pets?type=${actualType}&${modifiedQuery}`);
+          const data = await res.json();
+          if (data?.pets?.length) {
+            allPets.push(...data.pets);
+          }
+        }
+      } else {
+        const res = await fetch(`/pets?type=${actualType}&${query}`);
+        const data = await res.json();
+        if (data?.pets?.length) {
+          allPets = data.pets;
+        }
       }
   
-      if (data?.pets?.length) {
-        localStorage.setItem('pets', JSON.stringify(data.pets));
+      // If still no pets, try relaxed filters
+      if (!allPets.length) {
+        console.warn('No exact match. Retrying with relaxed filters...');
+        const relaxedQuery = buildRelaxedQuery();
+  
+        const res = await fetch(`/pets?type=${actualType}&${relaxedQuery}`);
+        const data = await res.json();
+        if (data?.pets?.length) {
+          allPets = data.pets;
+        }
+      }
+  
+      if (allPets.length) {
+        // Optional: Remove duplicates by pet ID
+        const uniquePets = Array.from(new Map(allPets.map(p => [p.id, p])).values());
+  
+        localStorage.setItem('pets', JSON.stringify(uniquePets));
         router.push('/results');
       } else {
         alert('Sorry, no matching pets found. Try different preferences.');
@@ -241,7 +271,7 @@ const QuizComponent = ({ questions, type, isLetUsDecide }) => {
       console.error('Error fetching pets:', err);
       alert('Something went wrong. Please try again later.');
     }
-  };
+  };  
 
   const question = questions[currentQuestion];
 
@@ -257,25 +287,50 @@ const QuizComponent = ({ questions, type, isLetUsDecide }) => {
           Question {currentQuestion + 1} out of {questions.length}
         </p>
         <div className="flex flex-col gap-8 text-left">
-          {question.options.map((option, i) => (
-            <label key={i} className="flex items-center space-x-2 cursor-pointer">
-              <input
-                type="radio"
-                name={`question-${currentQuestion}`}
-                value={option.value}
-                checked={selectedAnswers[currentQuestion] === option.value}
-                onChange={() => handleAnswerChange(option.value)}
-                className="hidden peer"
-              />
-              <div className="w-5 h-5 border-2 border-gray-500 rounded-md flex items-center justify-center peer-checked:bg-orange-500 peer-checked:border-orange-500">
-                {selectedAnswers[currentQuestion] === option.value && (
-                  <div className="w-2.5 h-2.5 bg-white rounded-full"></div>
-                )}
-              </div>
-              <span className="text-md font-medium">{option.label}</span>
-            </label>
-          ))}
+          {question.options.map((option, i) => {
+            const isMulti = question.apiKey === 'age' || question.apiKey === 'tags';
+            const currentValue = selectedAnswers[currentQuestion];
+
+            const isChecked = isMulti
+              ? Array.isArray(currentValue) && currentValue.includes(option.value)
+              : currentValue === option.value;
+
+            const handleChange = () => {
+              if (isMulti) {
+                const updated = Array.isArray(currentValue) ? [...currentValue] : [];
+                const index = updated.indexOf(option.value);
+                if (index === -1) {
+                  updated.push(option.value);
+                } else {
+                  updated.splice(index, 1);
+                }
+                handleAnswerChange(updated);
+              } else {
+                handleAnswerChange(option.value);
+              }
+            };
+
+            return (
+              <label key={i} className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type={isMulti ? 'checkbox' : 'radio'}
+                  name={`question-${currentQuestion}`}
+                  value={option.value}
+                  checked={isChecked}
+                  onChange={handleChange}
+                  className="hidden peer"
+                />
+                <div className="w-5 h-5 border-2 border-gray-500 rounded-md flex items-center justify-center peer-checked:bg-orange-500 peer-checked:border-orange-500">
+                  {isChecked && (
+                    <div className="w-2.5 h-2.5 bg-white rounded-full"></div>
+                  )}
+                </div>
+                <span className="text-md font-medium">{option.label}</span>
+              </label>
+            );
+          })}
         </div>
+
 
         <div className="flex justify-between mt-10">
           <Button

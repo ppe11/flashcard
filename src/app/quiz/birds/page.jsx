@@ -13,7 +13,7 @@ const genericQuestions = [
       { label: "A large enclosure or free-roaming setup", value: "large" },
     ],
     image: assets.bird,
-    multiple: true,
+    multiple: false,
     apiKey: "size",
   },
   {
@@ -35,7 +35,7 @@ const genericQuestions = [
       { label: "I’m ready for a high-maintenance pet that needs a lot of attention", value: "high" },
     ],
     image: assets.bird,
-    multiple: true,
+    multiple: false,
     apiKey: "breed",
   },
   {
