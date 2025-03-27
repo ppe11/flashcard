@@ -76,7 +76,7 @@ const AllPetsPageClient = () => {
   }
 
   return (
-    <div className="pt-16 pb-24 w-full max-w-screen-xl mx-auto px-4">
+    <div className="pt-[10vh] pb-24 w-full max-w-screen-xl mx-auto px-4">
       <h1 className="text-3xl font-bold text-center my-8">
         {pageTitle}
       </h1>
