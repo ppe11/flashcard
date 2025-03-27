@@ -6,13 +6,15 @@ import { Button } from '@/components/ui/button';
 
 const ResultsPage = () => {
   const [pets, setPets] = useState([]);
+  const [fallbackMessage, setFallbackMessage] = useState('');
 
   useEffect(() => {
     const storedPets = localStorage.getItem('pets');
+    const fallback = localStorage.getItem('fallbackMessage');
+
     if (storedPets) {
       try {
         const allPets = JSON.parse(storedPets);
-        // ✅ Only keep pets with at least 1 photo
         const petsWithPhotos = allPets.filter(pet => pet.photos && pet.photos.length > 0);
         setPets(petsWithPhotos);
       } catch (err) {
@@ -20,11 +22,19 @@ const ResultsPage = () => {
         setPets([]);
       }
     }
+
+    if (fallback) {
+      setFallbackMessage(fallback);
+    }
   }, []);
 
   return (
-    <div className="w-full text-center min-h-screen pt-32 px-4">
-      <h2 className="text-3xl font-semibold mb-8">Your Perfect Pet Awaits! 🐾</h2>
+    <div className="w-full text-center min-h-screen pt-28 px-4">
+      <h2 className="text-3xl font-semibold mb-4">Your Perfect Pet Awaits! 🐾</h2>
+
+      {fallbackMessage && (
+        <p className="text-orange-500 text-lg mb-6 font-medium">{fallbackMessage}</p>
+      )}
 
       {pets.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
@@ -44,7 +54,7 @@ const ResultsPage = () => {
               <CardContent className="text-center">
                 <h3 className="text-xl font-semibold">{pet.name}</h3>
                 <ul className="text-sm text-gray-700 mt-2 space-y-1">
-                  <li>• Breed: {pet.breed}</li>
+                  <li>• Breed: {pet.breed || 'Unknown'}</li>
                   <li>• Age: {pet.age}</li>
                   <li>• Gender: {pet.gender}</li>
                   <li>• Size: {pet.size}</li>
@@ -63,7 +73,7 @@ const ResultsPage = () => {
         <p className="text-gray-500 mt-10">No pets found. Try retaking the quiz.</p>
       )}
 
-      <div className="mt-10">
+      <div className="mt-12">
         <Button
           className="bg-orange-500 hover:bg-orange-600 text-white text-md rounded-full shadow-xl px-8 py-3"
           onClick={() => window.location.href = '/'}

@@ -37,7 +37,7 @@ const catQuestions = [
     ],
     image: assets.cat,
     multiple: false,
-    apiKey: "breed",
+    apiKey: "affectionate",
   },
   {
     question: "Do you have young children or other pets?",
@@ -49,7 +49,7 @@ const catQuestions = [
     ],
     image: assets.cat,
     multiple: true,
-    apiKey: "good_with",
+    apiKey: "tags",
   },
   {
     question: "How do you feel about cat fur in your home?",

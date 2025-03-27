@@ -20,23 +20,23 @@ const genericQuestions = [
     question: "How much interaction do you want with your pet?",
     options: [
       { label: "I want a pet I can handle and bond with daily", value: "interactive" },
-      { label: "I’d like a pet that is okay with some interaction but doesn’t need constant attention", value: "moderate" },
+      { label: "I’d like a pet that is okay with some interaction but doesn’t need constant attention", value: "middle_ground" },
       { label: "I prefer a pet I can mostly observe rather than handle", value: "observational" },
     ],
     image: assets.bird,
     multiple: false,
-    apiKey: "type",
+    apiKey: "breed",
   },
   {
     question: "What level of care are you comfortable with?",
     options: [
-      { label: "I prefer a low-maintenance pet that’s easy to care for", value: "low-care" },
-      { label: "I don’t mind moderate daily care and cleaning", value: "moderate-care" },
-      { label: "I’m ready for a high-maintenance pet that needs a lot of attention", value: "high-care" },
+      { label: "I prefer a low-maintenance pet that’s easy to care for", value: "low" },
+      { label: "I don’t mind moderate daily care and cleaning", value: "medium" },
+      { label: "I’m ready for a high-maintenance pet that needs a lot of attention", value: "high" },
     ],
     image: assets.bird,
     multiple: true,
-    apiKey: "type",
+    apiKey: "breed",
   },
   {
     question: "How long of a commitment are you willing to make?",
@@ -59,14 +59,14 @@ const genericQuestions = [
     ],
     image: assets.bird,
     multiple: true,
-    apiKey: "type",
+    apiKey: "tags",
   },
 ];
 
 const QuizBirds = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-orange-50 p-6">
-      <QuizComponent questions={genericQuestions} />
+      <QuizComponent questions={genericQuestions} type="bird"  />
     </div>
   );
 };
