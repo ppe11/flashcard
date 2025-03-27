@@ -68,7 +68,7 @@ const dogQuestions = [
 const QuizDogs = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-orange-50 p-6">
-      <QuizComponent questions={dogQuestions} />
+      <QuizComponent questions={dogQuestions} type="dog" />
     </div>
   )
 }
