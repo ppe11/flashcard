@@ -62,10 +62,13 @@ const ResultsPage = () => {
               </CardContent>
 
               <CardFooter className="flex justify-center p-4">
-                <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2 text-md">
-                  Adopt me!
-                </Button>
-              </CardFooter>
+              <Button
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2 text-md"
+                onClick={() => window.open(`https://www.petfinder.com/search/pets-for-adoption/?pet_id=${pet.id}`, '_blank')}
+              >
+                Adopt me!
+              </Button>
+            </CardFooter>
             </Card>
           ))}
         </div>
