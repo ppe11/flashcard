@@ -13,10 +13,11 @@ import careLevelMappings from '@/app/pets/Quiz_Breed_questions/care-Level-Generi
 import interactionMappings from '@/app/pets/Quiz_Breed_questions/Interaction-Level-Generic.json';
 import hypoallergenicCatBreeds from '@/app/pets/Quiz_Breed_questions/Hypoallergenic-Cat-breeds.json';
 
-const QuizComponent = ({ questions, type }) => {
+const QuizComponent = ({ questions, type, isLetUsDecide }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState(Array(questions.length).fill(null));
   const router = useRouter();
+  const [typeScores, setTypeScores] = useState({});
 
   const handleNext = () => {
     if (selectedAnswers[currentQuestion] !== null) {
@@ -38,7 +39,17 @@ const QuizComponent = ({ questions, type }) => {
     const updated = [...selectedAnswers];
     updated[currentQuestion] = answer;
     setSelectedAnswers(updated);
+  
+    if (isLetUsDecide) {
+      const types = Array.isArray(answer) ? answer : [answer];
+      const newScores = { ...typeScores };
+      types.forEach((type) => {
+        newScores[type] = (newScores[type] || 0) + 1;
+      });
+      setTypeScores(newScores);
+    }
   };
+  
 
   const buildQueryFromAnswers = () => {
     const query = {};
@@ -185,9 +196,19 @@ const QuizComponent = ({ questions, type }) => {
   
 
   const fetchRecommendedPets = async () => {
+    let chosenType = type;
+  
+    if (isLetUsDecide) {
+      const topType = Object.entries(typeScores).sort((a, b) => b[1] - a[1])[0]?.[0];
+      if (!topType) {
+        alert('Please answer all questions!');
+        return;
+      }
+      chosenType = topType;
+    }
+  
     const query = buildQueryFromAnswers();
   
-    // Map internal quiz types to actual Petfinder types
     const petfinderTypeMap = {
       reptile: 'scales-fins-other',
       fish: 'fish',
@@ -197,7 +218,7 @@ const QuizComponent = ({ questions, type }) => {
       cat: 'cat',
     };
   
-    const actualType = petfinderTypeMap[type] || type;
+    const actualType = petfinderTypeMap[chosenType] || chosenType;
   
     try {
       let res = await fetch(`/pets?type=${actualType}&${query}`);
@@ -221,7 +242,6 @@ const QuizComponent = ({ questions, type }) => {
       alert('Something went wrong. Please try again later.');
     }
   };
-  
 
   const question = questions[currentQuestion];
 
