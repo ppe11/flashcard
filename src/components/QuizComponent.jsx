@@ -211,7 +211,7 @@ const QuizComponent = ({ questions, type, isLetUsDecide }) => {
   
     const petfinderTypeMap = {
       reptile: 'scales-fins-other',
-      fish: 'fish',
+      fish: 'scales-fins-other',
       bird: 'bird',
       'small-furry': 'small-furry',
       dog: 'dog',
