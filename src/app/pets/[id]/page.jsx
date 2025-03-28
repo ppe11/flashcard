@@ -4,36 +4,70 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const PetDetailPage = ({ params }) => {
-  const { id } = params
-  const [pet, setPet] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+type Pet = {
+  id: number;
+  type: string;
+  breeds: {
+    primary: string;
+    secondary: string | null;
+    mixed: boolean;
+    unknown: boolean;
+  };
+  age: string;
+  name: string;
+  gender: string;
+  size: string;
+  photos?: Array<{
+    small: string;
+    medium: string;
+    large: string;
+    full: string;
+  }>;
+  description?: string;
+  status?: string;
+  attributes?: Record<string, boolean>;
+  contact?: {
+    email?: string;
+    phone?: string;
+    address?: {
+      city?: string;
+      state?: string;
+    };
+  };
+  url?: string;
+};
+
+const PetDetailPage = ({ params }: { params: { id: string } }) => {
+  const { id } = params;
+  const [pet, setPet] = useState<Pet | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPet = async () => {
       try {
-        const response = await fetch(`/api/petfinder/${id}`)
+        const response = await fetch(`/api/petfinder/${id}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch pet details')
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json()
-        setPet(data)
-      } catch (error) {
-        console.error('Error fetching pet details:', error)
-        setError(error.message)
+        const data = await response.json();
+        if (!data.pet) {
+          throw new Error('Pet data not found in response');
+        }
+        setPet(data.pet);
+      } catch (err) {
+        console.error('Error fetching pet:', err);
+        setError(err instanceof Error ? err.message : 'Unknown error occurred');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    if (id) {
-      fetchPet()
-    }
-  }, [id])
+    fetchPet();
+  }, [id]);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading pet details...</div>
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
   if (error || !pet) {
@@ -41,10 +75,10 @@ const PetDetailPage = ({ params }) => {
       <div className="min-h-screen flex flex-col items-center justify-center">
         <p className="text-red-500 mb-4">Error: {error || 'Pet not found'}</p>
         <Link href="/pets/pets_all" className="text-blue-500 hover:underline">
-          Return to all pets
+          Back to all pets
         </Link>
       </div>
-    )
+    );
   }
 
   return (
@@ -52,17 +86,18 @@ const PetDetailPage = ({ params }) => {
       <Link href="/pets/pets_all" className="inline-block mb-6 text-blue-500 hover:underline">
         &larr; Back to all pets
       </Link>
-      
+
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="md:flex">
           <div className="md:w-1/2">
             {pet.photos && pet.photos.length > 0 ? (
               <div className="relative h-96 w-full">
-                <Image 
-                  src={pet.photos[0].large || pet.photos[0].medium} 
-                  alt={pet.name}
-                  layout="fill"
-                  objectFit="cover"
+                <Image
+                  src={pet.photos[0].large || pet.photos[0].medium}
+                  alt={pet.name || 'Pet image'}
+                  fill
+                  className="object-cover"
+                  priority
                 />
               </div>
             ) : (
@@ -71,15 +106,17 @@ const PetDetailPage = ({ params }) => {
               </div>
             )}
           </div>
-          
+
           <div className="md:w-1/2 p-6">
             <div className="flex justify-between items-start">
               <h1 className="text-3xl font-bold text-gray-800">{pet.name}</h1>
-              <span className="inline-block bg-orange-100 text-orange-600 px-3 py-1 text-sm font-semibold rounded-full">
-                {pet.status}
-              </span>
+              {pet.status && (
+                <span className="inline-block bg-orange-100 text-orange-600 px-3 py-1 text-sm font-semibold rounded-full">
+                  {pet.status}
+                </span>
+              )}
             </div>
-            
+
             <div className="mt-4 grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-gray-500">Type</p>
@@ -88,9 +125,9 @@ const PetDetailPage = ({ params }) => {
               <div>
                 <p className="text-sm text-gray-500">Breed</p>
                 <p className="font-medium">
-                  {pet.breeds.primary}
+                  {pet.breeds.primary || 'Unknown'}
                   {pet.breeds.secondary && ` / ${pet.breeds.secondary}`}
-                  {pet.breeds.mixed && " (Mixed)"}
+                  {pet.breeds.mixed && ' (Mixed)'}
                 </p>
               </div>
               <div>
@@ -105,32 +142,34 @@ const PetDetailPage = ({ params }) => {
                 <p className="text-sm text-gray-500">Size</p>
                 <p className="font-medium">{pet.size}</p>
               </div>
-              <div>
-                <p className="text-sm text-gray-500">Color</p>
-                <p className="font-medium">{pet.colors.primary || 'Not specified'}</p>
-              </div>
             </div>
-            
+
             {pet.description && (
               <div className="mt-6">
                 <h2 className="text-xl font-semibold mb-2">About {pet.name}</h2>
                 <p className="text-gray-700">{pet.description}</p>
               </div>
             )}
-            
-            <div className="mt-6">
-              <h2 className="text-xl font-semibold mb-2">Characteristics</h2>
-              <div className="flex flex-wrap gap-2">
-                {pet.attributes && Object.entries(pet.attributes).map(([key, value]) => (
-                  value && (
-                    <span key={key} className="bg-blue-100 text-blue-800 px-2 py-1 text-xs rounded-full">
-                      {key.replace(/_/g, ' ')}
-                    </span>
-                  )
-                ))}
+
+            {pet.attributes && (
+              <div className="mt-6">
+                <h2 className="text-xl font-semibold mb-2">Characteristics</h2>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(pet.attributes).map(
+                    ([key, value]) =>
+                      value && (
+                        <span
+                          key={key}
+                          className="bg-blue-100 text-blue-800 px-2 py-1 text-xs rounded-full"
+                        >
+                          {key.replace(/_/g, ' ')}
+                        </span>
+                      )
+                  )}
+                </div>
               </div>
-            </div>
-            
+            )}
+
             {pet.contact && (
               <div className="mt-8 p-4 bg-gray-50 rounded-lg">
                 <h2 className="text-lg font-semibold mb-2">Contact Information</h2>
@@ -142,27 +181,32 @@ const PetDetailPage = ({ params }) => {
                 </p>
                 {pet.contact.address && (
                   <p className="text-sm">
-                    <span className="font-medium">Location:</span> {pet.contact.address.city}, {pet.contact.address.state}
+                    <span className="font-medium">Location:</span>{' '}
+                    {[pet.contact.address.city, pet.contact.address.state]
+                      .filter(Boolean)
+                      .join(', ')}
                   </p>
                 )}
               </div>
             )}
-            
-            <div className="mt-8">
-              <a 
-                href={pet.url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-block bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition"
-              >
-                Adopt {pet.name}
-              </a>
-            </div>
+
+            {pet.url && (
+              <div className="mt-8">
+                <a
+                  href={pet.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition"
+                >
+                  Adopt {pet.name}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PetDetailPage
+export default PetDetailPage;

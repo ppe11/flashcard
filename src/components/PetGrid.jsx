@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const PetGrid = ({ pets }) => {
   if (!pets || !Array.isArray(pets) || pets.length === 0) {
@@ -48,12 +49,13 @@ const PetGrid = ({ pets }) => {
                 <p>{pet.breed}</p>
                 <p>{pet.age} • {pet.gender}</p>
               </div>
-              <button 
-                className="mt-4 px-4 py-2 bg-[#F26A21] text-white rounded-full hover:bg-orange-600 transition"
-                onClick={() => window.open(`https://www.petfinder.com/search/pets-for-adoption/?id=${pet.id}`, '_blank')}
-              >
-                Adopt me!
-              </button>
+              <Link href={`/pets/${pet.id}`} >
+                <button 
+                  className="mt-4 px-4 py-2 bg-[#F26A21] text-white rounded-full hover:bg-orange-600 transition"
+                >
+                  Adopt me!
+                </button>
+              </Link>
             </div>
           </div>
         );
