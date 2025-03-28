@@ -238,7 +238,7 @@ export default function PetDetailPage({ params }) {
                   href={pet.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-4/12 flex items-center justify-center bg-orange-500 text-white font-bold py-3 px-6 rounded-3xl hover:bg-orange-600 transition"
+                  className=" flex flex-grow min-w-[120px] max-w-[300px] items-center justify-center bg-orange-500 text-white font-bold py-3 px-6 rounded-3xl hover:bg-orange-600 transition"
                 >
                   Adopt {pet.name}
                 </a>
