@@ -1,5 +1,3 @@
-// app/shelters/[id]/page.jsx
-
 import React from 'react';
 import Image from 'next/image';
 import { assets } from '@/assets/assets';
@@ -87,15 +85,25 @@ export default async function ShelterDetail({ params }) {
         </div>
   
         <div className="flex flex-col items-center gap-3 w-full md:w-1/3">
-          <a
-            href={shelter.website}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button className="px-6 py-2 border-2 text-orange-500 border-orange-500 font-semibold rounded-full hover:bg-orange-500 hover:text-white transition duration-300">
+          {shelter.website ? (
+            <Link href={shelter.website} passHref legacyBehavior>
+              <a 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-2 border-2 text-orange-500 border-orange-500 font-semibold rounded-full hover:bg-orange-500 hover:text-white transition duration-300"
+              >
+                VIEW OUR SHELTER
+              </a>
+            </Link>
+          ) : (
+            <button 
+              className="px-6 py-2 border-2 text-orange-500 border-orange-500 font-semibold rounded-full hover:bg-orange-500 hover:text-white transition duration-300"
+              disabled
+            >
               VIEW OUR SHELTER
             </button>
-          </a>
+          )}
+
           <div className="w-full border-t border-gray-200" />
           <div className="flex gap-6 items-center self-start">
             <Image src={assets.email} alt="email" width={30} />
