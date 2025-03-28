@@ -16,8 +16,16 @@ import bird from './bird.png';
 import reptile from './reptile.png';
 import smallpets from './smallpets.png';
 import generalpets from './generalpets.png';
+import email from './email.png';
+import link from './link.png';
+import location from './location.png';
+import phone from './phone.png';
 
 export const assets = {
+    phone,
+    location,
+    email,
+    link,
     icon_paw,
     home_cat,
     instagram,
