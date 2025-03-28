@@ -1,4 +1,4 @@
-
+// lib/petfinder.ts
 export async function getPetfinderToken(): Promise<string> {
     const response = await fetch('https://api.petfinder.com/v2/oauth2/token', {
       method: 'POST',
@@ -18,4 +18,17 @@ export async function getPetfinderToken(): Promise<string> {
   
     const data = await response.json();
     return data.access_token;
+  }
+  
+  export async function fetchPetDetails(id: string) {
+    const token = await getPetfinderToken();
+    const response = await fetch(`https://api.petfinder.com/v2/animals/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch pet: ${response.statusText}`);
+    }
+    
+    return response.json();
   }
