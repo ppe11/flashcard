@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import Link from 'next/link';
 
 const Shelters = () => {
   const [shelters, setShelters] = useState([]);
@@ -168,12 +169,12 @@ const Shelters = () => {
                     <p className="text-sm">Contact: {shelter.contact}</p>
                     <p className="text-sm">Location: {shelter.location}</p>
                     <p className="text-sm">Open: {shelter.hours}</p>
-                    <Button 
-                      className="mt-4 bg-orange-500 hover:bg-orange-600 text-white w-full text-md rounded-2xl"
-                      onClick={() => window.open(shelter.website || `https://www.petfinder.com/member/us/shelters/${shelter.id}`, '_blank')}
-                    >
-                      View
-                    </Button>
+                    <Link href={`/shelters/${shelter.id}`}>
+                      <Button 
+                        className="mt-4 bg-orange-500 hover:bg-orange-600 text-white w-full text-md rounded-2xl">
+                        View
+                      </Button>
+                    </Link>
                   </CardContent>
                 </div>
               </Card>
