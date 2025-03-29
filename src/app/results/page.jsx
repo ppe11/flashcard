@@ -6,48 +6,81 @@ import { Button } from '@/components/ui/button';
 
 const ResultsPage = () => {
   const [pets, setPets] = useState([]);
+  const [fallbackMessage, setFallbackMessage] = useState('');
 
   useEffect(() => {
     const storedPets = localStorage.getItem('pets');
+    const fallback = localStorage.getItem('fallbackMessage');
+
     if (storedPets) {
-      setPets(JSON.parse(storedPets));
+      try {
+        const allPets = JSON.parse(storedPets);
+        const petsWithPhotos = allPets.filter(pet => pet.photos && pet.photos.length > 0);
+        setPets(petsWithPhotos);
+      } catch (err) {
+        console.error('Failed to parse stored pets:', err);
+        setPets([]);
+      }
+    }
+
+    if (fallback) {
+      setFallbackMessage(fallback);
     }
   }, []);
 
   return (
-    <div className="w-full text-center min-h-screen pt-32">
-      <h2 className="text-2xl font-semibold mb-6">Your Perfect Pet Awaits! 🐾</h2>
+    <div className="w-full text-center min-h-screen pt-28 px-4">
+      <h2 className="text-3xl font-semibold mb-4">Your Perfect Pet Awaits! 🐾</h2>
+
+      {fallbackMessage && (
+        <p className="text-orange-500 text-lg mb-6 font-medium">{fallbackMessage}</p>
+      )}
 
       {pets.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 py-6 px-16">
-          {pets.map((pet, index) => (
-            <Card key={index} className="shadow-sm hover:shadow-xl transition duration-600 rounded-xl bg-orange-50">
-              <CardHeader className="flex items-center justify-center p-4">
-                <img src={pet.image} alt={pet.name} className="w-32 h-32 object-contain rounded-md"/>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+          {pets.map((pet) => (
+            <Card
+              key={pet.id}
+              className="shadow-md hover:shadow-lg transition duration-300 rounded-xl bg-orange-50"
+            >
+              <CardHeader className="flex justify-center p-4">
+                <img
+                  src={pet.photos?.[0]?.medium || 'https://via.placeholder.com/300x300?text=No+Image'}
+                  alt={pet.name}
+                  className="w-40 h-40 object-cover rounded-lg"
+                />
               </CardHeader>
+
               <CardContent className="text-center">
-                <h3 className="text-lg font-semibold">{pet.name}</h3>
-                <ul className="text-sm text-gray-600 mt-2">
-                  {pet.description.map((desc, i) => (
-                    <li key={i}>• {desc}</li>
-                  ))}
+                <h3 className="text-xl font-semibold">{pet.name}</h3>
+                <ul className="text-sm text-gray-700 mt-2 space-y-1">
+                  <li>• Breed: {pet.breed || 'Unknown'}</li>
+                  <li>• Age: {pet.age}</li>
+                  <li>• Gender: {pet.gender}</li>
+                  <li>• Size: {pet.size}</li>
                 </ul>
               </CardContent>
-              <CardFooter className="flex justify-center p-4 pb-6">
-                <Button className="bg-orange-500 hover:bg-orange-600 text-white text-lg border rounded-3xl p-5">
-                  Adopt me!
-                </Button>
-              </CardFooter>
+
+              <CardFooter className="flex justify-center p-4">
+              <Button
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2 text-md"
+                onClick={() => window.open(`https://www.petfinder.com/search/pets-for-adoption/?pet_id=${pet.id}`, '_blank')}
+              >
+                Adopt me!
+              </Button>
+            </CardFooter>
             </Card>
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No pets found. Try a different quiz result.</p>
+        <p className="text-gray-500 mt-10">No pets found. Try retaking the quiz.</p>
       )}
 
-      <div className="mt-6">
-        <Button className="bg-orange-500 hover:bg-orange-600 text-white text-md rounded-3xl shadow-2xl"
-          onClick={() => window.location.href = '/'}>
+      <div className="mt-12">
+        <Button
+          className="bg-orange-500 hover:bg-orange-600 text-white text-md rounded-full shadow-xl px-8 py-3"
+          onClick={() => window.location.href = '/'}
+        >
           Retake Quiz
         </Button>
       </div>

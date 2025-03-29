@@ -1,38 +1,61 @@
-name: Deploy to Vercel on Merge
+name: Deploy to Vercel (Manual CLI)
 
 on:
   push:
     branches:
-      - main    
+      - main
+
+concurrency:
+  group: deploy-${{ github.ref }} # Concurrency per branch is often safer
+  cancel-in-progress: true
 
 jobs:
-  build_and_deploy:
+  deploy:
     runs-on: ubuntu-latest
+    # Set environment variables for Vercel CLI
+    environment:
+      # If you have a GitHub Environment set up for secrets, specify it here.
+      # Otherwise, you can remove this line.
+      name: production # Optional: Example environment name
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Pass token as env var
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: npm ci
-        
-      - name: Run linting
-        run: npm run lint || echo "No linting configured"
-        
-      - name: Run tests
-        run: npm test || echo "No tests configured"
-        
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          vercel-args: '--prod --yes'
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
-          working-directory: ./
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest # Install the latest CLI globally
+
+      - name: Pull Vercel Environment Information
+        # This links the project directory to your Vercel project/org.
+        # It uses the VERCEL_ORG_ID and VERCEL_PROJECT_ID env vars.
+        # It's often needed before deploying if the .vercel directory isn't committed.
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        # Add your build command here (e.g., npm run build)
+        # Vercel CLI's deploy command can sometimes build automatically,
+        # but explicitly building first is often more reliable in CI.
+        run: npm run build # Replace with your actual build command if needed
+
+      - name: Deploy Project Artifacts to Vercel
+        # Use the globally installed CLI.
+        # It will automatically use VERCEL_ORG_ID, VERCEL_PROJECT_ID, VERCEL_TOKEN from env.
+        # --prod flag promotes the deployment to production.
+        # --yes skips interactive prompts.
+        run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+        # Optional: If your build step produces a specific directory (e.g., 'dist', '.output'),
+        # you might deploy directly from there:
+        # run: vercel deploy ./dist --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
