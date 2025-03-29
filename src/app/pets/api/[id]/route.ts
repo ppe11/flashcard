@@ -1,11 +1,12 @@
 import { fetchPetDetails } from '@/lib/petfinder';
+import { NextRequest } from 'next/server';
 
 export async function GET(
-  request: Request, 
-  { params }: { params: { id: string } }
+  request: NextRequest, 
+  context: { params: { id: string } }
 ) {
   try {
-    const id = params.id;
+    const id = context.params.id; // Correct way to access params
 
     const data = await fetchPetDetails(id);
 
