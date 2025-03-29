@@ -111,38 +111,102 @@ export async function GET(request: Request) {
     try {
       // Handle reptile/fish breed filtering differently
       if (type === 'scales-fins-other' && subType) {
-        const breedList = subType === 'reptile' 
-          ? breeds.reptile_breeds 
-          : breeds.fish_breeds;
-        
-        console.log(`Fetching ${subType} with breeds:`, breedList);
-        
-        // Make separate requests for each breed and combine results
-        if (breedList && breedList.length > 0) {
-          for (const singleBreed of breedList) {
-            const queryParams = new URLSearchParams();
-            queryParams.append('type', type);
-            queryParams.append('breed', singleBreed);
-            if (age) queryParams.append('age', age);
-            queryParams.append('page', page);
-            queryParams.append('limit', limit);
+          const breedList = subType === 'reptile'
+              ? breeds.reptile_breeds
+              : breeds.fish_breeds;
 
-            console.log(`Fetching ${singleBreed} with params: ${queryParams.toString()}`);
-            
-            const response = await fetch(`https://api.petfinder.com/v2/animals?${queryParams.toString()}`, {
+          console.log(`Fetching ${subType} with breeds:`, breedList);
+
+          // Join all breeds into a single string
+          const allBreeds = breedList.join(',');
+
+          const queryParams = new URLSearchParams();
+          queryParams.append('type', type);
+          queryParams.append('breed', allBreeds); // Append all breeds
+          if (age) queryParams.append('age', age);
+          queryParams.append('page', page);
+          queryParams.append('limit', limit);
+
+          console.log(`Fetching all ${subType} breeds with params: ${queryParams.toString()}`);
+
+          const response = await fetch(`https://api.petfinder.com/v2/animals?${queryParams.toString()}`, {
               headers: { Authorization: `Bearer ${token}` },
               cache: 'no-store'
-            });
+          });
 
-            if (!response.ok) {
-              console.error(`Failed to fetch ${singleBreed}: ${response.statusText}`);
-              continue;
-            }
+          if (!response.ok) {
+              console.error(`Failed to fetch ${subType} breeds: ${response.statusText}`);
+          } else {
+              const data: PetfinderResponse = await response.json();
+              animals = [...animals, ...data.animals];
+              pagination = data.pagination;
+          }
+      }
+      else if (type === 'small-pets') {
+        let smallFurryAnimals: PetfinderPet[] = [];
+        let rabbitAnimals: PetfinderPet[] = [];
 
-            const data: PetfinderResponse = await response.json();
-            animals = [...animals, ...data.animals];
-            // Update pagination with the last successful response
-            pagination = data.pagination;
+        // Fetch small-furry
+        const queryParamsSmallFurry = new URLSearchParams();
+        queryParamsSmallFurry.append('type', 'small-furry');
+        if (breed) queryParamsSmallFurry.append('breed', breed);
+        if (age) queryParamsSmallFurry.append('age', age);
+        queryParamsSmallFurry.append('page', page);
+        queryParamsSmallFurry.append('limit', String(Math.ceil(Number(limit) / 2))); // Use first half of limit
+
+        console.log(`Fetching small-furry with params: ${queryParamsSmallFurry.toString()}`);
+
+        const responseSmallFurry = await fetch(`https://api.petfinder.com/v2/animals?${queryParamsSmallFurry.toString()}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          cache: 'no-store'
+        });
+
+        if (!responseSmallFurry.ok) {
+          console.error(`API error fetching small-furry: ${responseSmallFurry.statusText}`);
+        } else {
+          const dataSmallFurry: PetfinderResponse = await responseSmallFurry.json();
+          smallFurryAnimals = dataSmallFurry.animals;
+          // Use pagination from the first call as a base
+          pagination = dataSmallFurry.pagination;
+        }
+
+        // Fetch rabbit
+        const queryParamsRabbit = new URLSearchParams();
+        queryParamsRabbit.append('type', 'rabbit');
+        if (breed) queryParamsRabbit.append('breed', breed);
+        if (age) queryParamsRabbit.append('age', age);
+        queryParamsRabbit.append('page', page);
+        queryParamsSmallFurry.append('limit', String(Math.ceil(Number(limit) / 2))); // Use remaining half of limit
+
+        console.log(`Fetching rabbit with params: ${queryParamsRabbit.toString()}`);
+
+        const responseRabbit = await fetch(`https://api.petfinder.com/v2/animals?${queryParamsRabbit.toString()}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          cache: 'no-store'
+        });
+
+        if (!responseRabbit.ok) {
+          console.error(`API error fetching rabbit: ${responseRabbit.statusText}`);
+        } else {
+          const dataRabbit: PetfinderResponse = await responseRabbit.json();
+          rabbitAnimals = dataRabbit.animals;
+        }
+
+        // Combine the results randomly
+        animals = [];
+        let smallFurryIndex = 0;
+        let rabbitIndex = 0;
+
+        while (smallFurryIndex < smallFurryAnimals.length || rabbitIndex < rabbitAnimals.length) {
+          if (Math.random() < 0.5 && smallFurryIndex < smallFurryAnimals.length) {
+            animals.push(smallFurryAnimals[smallFurryIndex]);
+            smallFurryIndex++;
+          } else if (rabbitIndex < rabbitAnimals.length) {
+            animals.push(rabbitAnimals[rabbitIndex]);
+            rabbitIndex++;
+          } else if (smallFurryIndex < smallFurryAnimals.length) {
+            animals.push(smallFurryAnimals[smallFurryIndex]);
+            smallFurryIndex++;
           }
         }
       } else {

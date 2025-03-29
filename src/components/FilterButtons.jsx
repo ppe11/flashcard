@@ -62,8 +62,8 @@ const FilterButtons = () => {
         Birds
       </button>
       <button 
-        className={`px-4 py-2 rounded-full ${currentType === 'small-furry' || currentType === 'rabbit' ? 'bg-[#F26A21] text-white' : 'bg-[#FEF6EC] text-gray-800'}`}
-        onClick={() => handleFilterClick('small-furry')}
+        className={`px-4 py-2 rounded-full ${currentType === 'small-pets' ? 'bg-[#F26A21] text-white' : 'bg-[#FEF6EC] text-gray-800'}`}
+        onClick={() => handleFilterClick('small-pets')}
       >
         Small Pets
       </button>

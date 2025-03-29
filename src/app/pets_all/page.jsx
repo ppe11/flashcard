@@ -67,8 +67,12 @@ const AllPetsPageClient = () => {
   
   if (type) {
     if (type === 'scales-fins-other' && subType) {
-      pageTitle = `${subType.charAt(0).toUpperCase() + subType.slice(1)}es Available for Adoption`
-    } else {
+      if (subType === 'reptile') {
+        pageTitle = 'Reptiles Available for Adoption'
+      }
+      else if (subType === 'fish') {
+        pageTitle = 'Fish Available for Adoption'
+      }
       // Capitalize and pluralize the type for the title
       const typeName = type.charAt(0).toUpperCase() + type.slice(1)
       pageTitle = `${typeName}s Available for Adoption`

@@ -153,7 +153,7 @@ export async function GET(request: Request) {
     const state = searchParams.get('state') || undefined;
     const country = searchParams.get('country') || undefined;
     const page = searchParams.get('page') || '1';
-    const limit = searchParams.get('limit') || '20'; // Reduced from 100 to stay within API limits
+    const limit = searchParams.get('limit') || '21'; // Reduced from 100 to stay within API limits
 
     try {
       // Build query parameters - only include valid parameters
