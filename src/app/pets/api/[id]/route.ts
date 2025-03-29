@@ -1,13 +1,19 @@
 import { fetchPetDetails } from '@/lib/petfinder';
 import { NextRequest, NextResponse } from 'next/server';
 
+// Define the expected shape of the context object's params
+interface RouteContext {
+  params: {
+    id: string;
+  };
+}
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: RouteContext 
 ) {
   try {
-    const { id } = params;
+    const { id } = context.params; 
 
     if (!id) {
       return NextResponse.json({ error: 'Missing pet ID' }, { status: 400 });
