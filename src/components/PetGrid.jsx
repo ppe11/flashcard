@@ -4,12 +4,10 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const PetGrid = ({ pets }) => {
+const PetGrid = ({ pets, goToDetailPage}) => {
   if (!pets || !Array.isArray(pets) || pets.length === 0) {
     return <div className="text-center py-10">No pets found.</div>;
   }
-
-  const router = useRouter();
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
@@ -49,13 +47,12 @@ const PetGrid = ({ pets }) => {
                 <p>{pet.breed}</p>
                 <p>{pet.age} • {pet.gender}</p>
               </div>
-              <Link href={`/pets/${pet.id}`} >
                 <button 
                   className="mt-4 px-4 py-2 bg-[#F26A21] text-white rounded-full hover:bg-orange-600 transition"
+                  onClick={() => goToDetailPage(pet.id)}
                 >
                   Adopt me!
                 </button>
-              </Link>
             </div>
           </div>
         );

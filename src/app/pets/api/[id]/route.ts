@@ -7,6 +7,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
     
     
     const data = await fetchPetDetails(id);
+
+    console.log("API Response:", data)
     
     return new Response(JSON.stringify({ pet: data.animal }), {
       headers: { 'Content-Type': 'application/json' }

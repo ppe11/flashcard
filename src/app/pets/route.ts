@@ -30,6 +30,7 @@ type PetfinderPet = {
     large: string;
     full: string;
   }>;
+  distance?: number;
 };
 
 type PetfinderResponse = {
@@ -99,6 +100,7 @@ export async function GET(request: Request) {
     const age = searchParams.get('age') || undefined;
     const page = searchParams.get('page') || '1';
     const limit = searchParams.get('limit') || '100';
+    const location = searchParams.get('location') || undefined;
 
     let animals: PetfinderPet[] = [];
     let pagination = {
@@ -127,6 +129,11 @@ export async function GET(request: Request) {
           queryParams.append('page', page);
           queryParams.append('limit', limit);
 
+          if (location){
+            queryParams.append('location', location);
+            queryParams.append('sort', 'distance');
+          }
+
           console.log(`Fetching all ${subType} breeds with params: ${queryParams.toString()}`);
 
           const response = await fetch(`https://api.petfinder.com/v2/animals?${queryParams.toString()}`, {
@@ -153,6 +160,10 @@ export async function GET(request: Request) {
         if (age) queryParamsSmallFurry.append('age', age);
         queryParamsSmallFurry.append('page', page);
         queryParamsSmallFurry.append('limit', String(Math.ceil(Number(limit) / 2))); // Use first half of limit
+        if (location){
+          queryParamsSmallFurry.append('location', location);
+          queryParamsSmallFurry.append('sort', 'distance');
+        }
 
         console.log(`Fetching small-furry with params: ${queryParamsSmallFurry.toString()}`);
 
@@ -176,7 +187,11 @@ export async function GET(request: Request) {
         if (breed) queryParamsRabbit.append('breed', breed);
         if (age) queryParamsRabbit.append('age', age);
         queryParamsRabbit.append('page', page);
-        queryParamsSmallFurry.append('limit', String(Math.ceil(Number(limit) / 2))); // Use remaining half of limit
+        queryParamsRabbit.append('limit', String(Math.ceil(Number(limit) / 2))); // Use remaining half of limit
+        if (location){
+          queryParamsRabbit.append('location', location);
+          queryParamsRabbit.append('sort', 'distance');
+        }
 
         console.log(`Fetching rabbit with params: ${queryParamsRabbit.toString()}`);
 
@@ -192,21 +207,55 @@ export async function GET(request: Request) {
           rabbitAnimals = dataRabbit.animals;
         }
 
-        // Combine the results randomly
-        animals = [];
-        let smallFurryIndex = 0;
-        let rabbitIndex = 0;
 
-        while (smallFurryIndex < smallFurryAnimals.length || rabbitIndex < rabbitAnimals.length) {
-          if (Math.random() < 0.5 && smallFurryIndex < smallFurryAnimals.length) {
+        if (location){
+          // Merge the two sorted arrays
+          animals = [];
+          let smallFurryIndex = 0;
+          let rabbitIndex = 0;
+
+          while (smallFurryIndex < smallFurryAnimals.length && rabbitIndex < rabbitAnimals.length) {
+            const distanceA = smallFurryAnimals[smallFurryIndex].distance === undefined ? Number.MAX_VALUE : smallFurryAnimals[smallFurryIndex].distance;
+            const distanceB = rabbitAnimals[rabbitIndex].distance === undefined ? Number.MAX_VALUE : rabbitAnimals[rabbitIndex].distance;
+
+            if (distanceA <= distanceB) {
+              animals.push(smallFurryAnimals[smallFurryIndex]);
+              smallFurryIndex++;
+            } else {
+              animals.push(rabbitAnimals[rabbitIndex]);
+              rabbitIndex++;
+            }
+          }
+
+          // Add any remaining elements from smallFurryAnimals
+          while (smallFurryIndex < smallFurryAnimals.length) {
             animals.push(smallFurryAnimals[smallFurryIndex]);
             smallFurryIndex++;
-          } else if (rabbitIndex < rabbitAnimals.length) {
+          }
+
+          // Add any remaining elements from rabbitAnimals
+          while (rabbitIndex < rabbitAnimals.length) {
             animals.push(rabbitAnimals[rabbitIndex]);
             rabbitIndex++;
-          } else if (smallFurryIndex < smallFurryAnimals.length) {
-            animals.push(smallFurryAnimals[smallFurryIndex]);
-            smallFurryIndex++;
+          }
+        }
+        else{
+          // Combine the results randomly
+          animals = [];
+          let smallFurryIndex = 0;
+          let rabbitIndex = 0;
+
+          while (smallFurryIndex < smallFurryAnimals.length || rabbitIndex < rabbitAnimals.length) {
+            if (Math.random() < 0.5 && smallFurryIndex < smallFurryAnimals.length) {
+              animals.push(smallFurryAnimals[smallFurryIndex]);
+              smallFurryIndex++;
+            } else if (rabbitIndex < rabbitAnimals.length) {
+              animals.push(rabbitAnimals[rabbitIndex]);
+              rabbitIndex++;
+            } else if (smallFurryIndex < smallFurryAnimals.length) {
+              animals.push(smallFurryAnimals[smallFurryIndex]);
+              smallFurryIndex++;
+            }
           }
         }
       } else {
@@ -217,6 +266,11 @@ export async function GET(request: Request) {
         if (age) queryParams.append('age', age);
         queryParams.append('page', page);
         queryParams.append('limit', limit);
+
+        if (location){
+          queryParams.append('location', location);
+          queryParams.append('sort', 'distance');
+        }
 
         console.log(`Fetching with params: ${queryParams.toString()}`);
         
