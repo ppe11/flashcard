@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import Link from 'next/link';
 
 const Shelters = () => {
   const [shelters, setShelters] = useState([]);
@@ -138,21 +139,21 @@ const Shelters = () => {
       ) : shelters.length === 0 ? (
         <div className="text-center py-10">No shelters found. Try a different search.</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-6">
           {shelters.map((shelter) => (
             <div 
               key={shelter.id} 
               className='flex flex-col hover:shadow-xl h-fit hover:scale-105 transition duration-400 rounded-2xl'
             >
-              <Card className="flex bg-orange-100 p-6 rounded-2xl shadow-md ">
-                <div className="flex items-center gap-8">
+              <Card className="flex bg-orange-100 p-4 rounded-2xl shadow-md ">
+                <div className="flex items-center gap-2">
                   {/* Shelter Image */}
-                  <div className="w-40 h-40 bg-white rounded-lg flex items-center justify-center">
+                  <div className="w-40 h-40 bg-white rounded-lg flex items-center justify-center border">
                     {shelter.photos && shelter.photos.length > 0 ? (
                       <img 
                         src={shelter.photos[0].medium} 
                         alt={shelter.name}
-                        className="w-full h-full object-cover rounded-lg"
+                        className="w-full h-14/12 object-cover rounded-lg"
                         onError={(e) => {
                           e.target.onerror = null;
                           e.target.src = 'https://placehold.co/150x150?text=🏠';
@@ -168,12 +169,12 @@ const Shelters = () => {
                     <p className="text-sm">Contact: {shelter.contact}</p>
                     <p className="text-sm">Location: {shelter.location}</p>
                     <p className="text-sm">Open: {shelter.hours}</p>
-                    <Button 
-                      className="mt-4 bg-orange-500 hover:bg-orange-600 text-white w-full text-md rounded-2xl"
-                      onClick={() => window.open(shelter.website || `https://www.petfinder.com/member/us/shelters/${shelter.id}`, '_blank')}
-                    >
-                      View
-                    </Button>
+                    <Link href={`/shelters/${shelter.id}`}>
+                      <Button 
+                        className="mt-4 bg-orange-500 hover:bg-orange-600 text-white w-full text-md rounded-2xl">
+                        View
+                      </Button>
+                    </Link>
                   </CardContent>
                 </div>
               </Card>
