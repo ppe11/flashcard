@@ -18,8 +18,8 @@ jobs:
       # Otherwise, you can remove this line.
       name: production # Optional: Example environment name
     env:
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_ORG_ID: ${{ secrets.ORGID }}
+      VERCEL_PROJECT_ID: ${{ secrets.PROJECTID }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Pass token as env var
 
     steps:
