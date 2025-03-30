@@ -95,14 +95,7 @@ export default async function ShelterDetail({ params }) {
                 VIEW OUR SHELTER
               </a>
             </Link>
-          ) : (
-            <button 
-              className="px-6 py-2 border-2 text-orange-500 border-orange-500 font-semibold rounded-full hover:bg-orange-500 hover:text-white transition duration-300"
-              disabled
-            >
-              VIEW OUR SHELTER
-            </button>
-          )}
+          ) : null}
 
           <div className="w-full border-t border-gray-200" />
           <div className="flex gap-6 items-center self-start">
