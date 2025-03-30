@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from 'next/link';
+import { saveToSessionStorage, getFromSessionStorage, generateCacheKey } from '@/lib/clientStorage';
 
 const Shelters = () => {
   const [shelters, setShelters] = useState([]);
@@ -21,6 +22,20 @@ const Shelters = () => {
       setError(null);
       
       try {
+        // Generate cache key for all shelters (no search params)
+        const cacheKey = 'petfinder_all_shelters';
+        
+        // Check if we have cached shelter data
+        const cachedShelters = getFromSessionStorage(cacheKey);
+        
+        if (cachedShelters) {
+          console.log('Using cached shelter data');
+          setShelters(cachedShelters);
+          setLoading(false);
+          return;
+        }
+        
+        console.log('Fetching shelter data from API');
         const response = await fetch('/api/shelters');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -34,6 +49,8 @@ const Shelters = () => {
         });
         
         if (data.shelters && Array.isArray(data.shelters)) {
+          // Save to session storage (cache for 30 minutes)
+          saveToSessionStorage(cacheKey, data.shelters, 30);
           setShelters(data.shelters);
         } else {
           console.error('Invalid shelters data format:', data);
@@ -61,6 +78,22 @@ const Shelters = () => {
       if (locationSearch) queryParams.set('location', locationSearch);
       if (nameSearch) queryParams.set('name', nameSearch);
       
+      // Generate a cache key based on search parameters
+      const cacheKey = generateCacheKey('petfinder_shelters_search', {
+        location: locationSearch,
+        name: nameSearch
+      });
+      
+      // Check if we have cached search results
+      const cachedResults = getFromSessionStorage(cacheKey);
+      
+      if (cachedResults) {
+        console.log(`Using cached shelter search results for: ${cacheKey}`);
+        setShelters(cachedResults);
+        setLoading(false);
+        return;
+      }
+      
       const url = `/api/shelters${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
       console.log(`Searching shelters with URL: ${url}`);
       
@@ -72,6 +105,8 @@ const Shelters = () => {
       const data = await response.json();
       
       if (data.shelters && Array.isArray(data.shelters)) {
+        // Save search results to session storage (cache for 15 minutes)
+        saveToSessionStorage(cacheKey, data.shelters, 15);
         setShelters(data.shelters);
       } else {
         console.error('Invalid shelters data format:', data);

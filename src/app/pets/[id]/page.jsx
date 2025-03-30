@@ -4,6 +4,7 @@ import { useEffect, useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { assets } from '@/assets/assets';
+import { saveToSessionStorage, getFromSessionStorage } from '@/lib/clientStorage';
 
 export default function PetDetailPage({ params }) {
   const { id } = use(params);
@@ -31,9 +32,26 @@ export default function PetDetailPage({ params }) {
   useEffect(() => {
     const fetchPet = async () => {
       try {
+        // Check if we have this pet cached in session storage
+        const cacheKey = `petfinder_pet_${id}`;
+        const cachedPet = getFromSessionStorage(cacheKey);
+        
+        if (cachedPet) {
+          console.log(`Using cached data for pet ${id}`);
+          setPet(cachedPet);
+          setLoading(false);
+          return;
+        }
+        
+        // No cached data, fetch from API
+        console.log(`Fetching pet ${id} from API`);
         const response = await fetch(`/pets/api/${id}`);
         const data = await response.json();
+        
         if (!response.ok) throw new Error(data.error || 'Failed to fetch');
+        
+        // Save to session storage (cache for 60 minutes)
+        saveToSessionStorage(cacheKey, data.pet, 60);
         setPet(data.pet);
       } catch (err) {
         setError(err.message);

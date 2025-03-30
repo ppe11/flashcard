@@ -10,6 +10,7 @@ export async function getPetfinderToken(): Promise<string> {
         client_id: process.env.PETFINDER_KEY,
         client_secret: process.env.PETFINDER_SECRET,
       }),
+      cache: 'no-store', // Don't cache auth tokens
     });
   
     if (!response.ok) {
@@ -23,7 +24,8 @@ export async function getPetfinderToken(): Promise<string> {
   export async function fetchPetDetails(id: string) {
     const token = await getPetfinderToken();
     const response = await fetch(`https://api.petfinder.com/v2/animals/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
+      next: { revalidate: 3600 } // Cache pet details for an hour
     });
     
     if (!response.ok) {

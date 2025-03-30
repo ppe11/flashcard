@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import breeds from './Quiz_Breed_questions/Bird-Small-Fish-Reptile-Breeds.json';
-export const dynamic = "force-dynamic" 
-export const revalidate = 0
+export const dynamic = "auto"
+export const revalidate = 3600 // Revalidate data every hour
 
 type PetfinderAuthResponse = {
   token_type: string;
@@ -70,6 +70,7 @@ async function getPetfinderToken(): Promise<string> {
       client_id: process.env.PETFINDER_KEY,
       client_secret: process.env.PETFINDER_SECRET,
     }),
+    cache: 'no-store', 
   });
 
   if (!response.ok) {
@@ -81,6 +82,8 @@ async function getPetfinderToken(): Promise<string> {
 }
 
 export async function GET(request: Request) {
+  const cacheKey = request.url;
+  
   try {
     // Try to get a token for the Petfinder API
     let token;
@@ -138,7 +141,7 @@ export async function GET(request: Request) {
 
           const response = await fetch(`https://api.petfinder.com/v2/animals?${queryParams.toString()}`, {
               headers: { Authorization: `Bearer ${token}` },
-              cache: 'no-store'
+              next: { revalidate: 3600 }
           });
 
           if (!response.ok) {
@@ -169,7 +172,7 @@ export async function GET(request: Request) {
 
         const responseSmallFurry = await fetch(`https://api.petfinder.com/v2/animals?${queryParamsSmallFurry.toString()}`, {
           headers: { Authorization: `Bearer ${token}` },
-          cache: 'no-store'
+          next: { revalidate: 3600 } // Cache for an hour
         });
 
         if (!responseSmallFurry.ok) {
@@ -197,7 +200,7 @@ export async function GET(request: Request) {
 
         const responseRabbit = await fetch(`https://api.petfinder.com/v2/animals?${queryParamsRabbit.toString()}`, {
           headers: { Authorization: `Bearer ${token}` },
-          cache: 'no-store'
+          next: { revalidate: 3600 } // Cache for an hour
         });
 
         if (!responseRabbit.ok) {
@@ -276,7 +279,7 @@ export async function GET(request: Request) {
         
         const response = await fetch(`https://api.petfinder.com/v2/animals?${queryParams.toString()}`, {
           headers: { Authorization: `Bearer ${token}` },
-          cache: 'no-store'
+          next: { revalidate: 3600 } // Cache for an hour
         });
 
         if (!response.ok) {
@@ -436,7 +439,6 @@ function getSamplePets(filterType?: string | null): SimplifiedPet[] {
     }
   ];
   
-  // Filter by type if specified
   if (filterType && filterType !== 'all') {
     return samplePets.filter(pet => pet.type === filterType);
   }

@@ -149,21 +149,17 @@ export async function GET(request: Request) {
     const location = searchParams.get('location') || undefined;
     const name = searchParams.get('name') || undefined;
     
-    // Only use these parameters if provided in the request
     const state = searchParams.get('state') || undefined;
     const country = searchParams.get('country') || undefined;
     const page = searchParams.get('page') || '1';
-    const limit = searchParams.get('limit') || '21'; // Reduced from 100 to stay within API limits
+    const limit = searchParams.get('limit') || '21';
 
     try {
-      // Build query parameters - only include valid parameters
       const queryParams = new URLSearchParams();
       
-      // Only add parameters that are defined and necessary
       if (location) {
         queryParams.append('location', location);
-        // Only add distance if location is provided
-        queryParams.append('distance', '100'); // Default distance in miles
+        queryParams.append('distance', '100');
       }
       
       if (name) queryParams.append('name', name);
@@ -173,7 +169,6 @@ export async function GET(request: Request) {
       queryParams.append('page', page);
       queryParams.append('limit', limit);
       
-      // Only sort by distance if location is provided
       if (location) {
         queryParams.append('sort', 'distance');
       }
@@ -187,7 +182,6 @@ export async function GET(request: Request) {
 
       if (!response.ok) {
         console.error(`API error: ${response.status} - ${response.statusText}`);
-        // If no location or name is provided, or if we get a bad request, return sample data
         if (response.status === 400 || (!location && !name)) {
           console.log('Returning sample shelter data due to API error or missing search parameters');
           return NextResponse.json({ 
@@ -217,7 +211,6 @@ export async function GET(request: Request) {
 
       // Simplify organization data before sending response
       const simplifiedShelters: SimplifiedShelter[] = data.organizations.map((org) => {
-        // Format the address
         const addressParts = [
           org.address?.address1,
           org.address?.city,

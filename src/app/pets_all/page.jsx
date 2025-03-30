@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation' // Import useRouter
 import PetGrid from '../../components/PetGrid'
 import FilterButtons from '../../components/FilterButtons'
+import { saveToSessionStorage, getFromSessionStorage, generateCacheKey } from '../../lib/clientStorage'
 
 const AllPetsPageClient = () => {
   const [pets, setPets] = useState([])
@@ -32,7 +33,6 @@ const AllPetsPageClient = () => {
     if (storedFilters) {
       const filters = JSON.parse(storedFilters);
 
-      // Create a new URLSearchParams object with the stored filters
       const newParams = new URLSearchParams();
       if (filters.type) {
         newParams.set('type', filters.type);
@@ -44,16 +44,13 @@ const AllPetsPageClient = () => {
         newParams.set('location', filters.location);
       }
 
-      // Construct the new URL with the stored filters
       const newURL = `?${newParams.toString()}`;
 
-      // Push the new URL to the router
       router.push(newURL);
 
-      // Remove the filters from localStorage
       localStorage.removeItem('petFilters');
     }
-  }, [router]); // Only run this effect when the router instance changes
+  }, [router]);
 
   useEffect(() => {
     async function fetchPets() {
@@ -61,7 +58,6 @@ const AllPetsPageClient = () => {
       setError(null)
       
       try {
-        // Build the URL with the type and subType parameters if they exist
         let url = '/pets'
         const queryParams = new URLSearchParams()
         
@@ -71,6 +67,21 @@ const AllPetsPageClient = () => {
         
         if (queryParams.toString()) {
           url += `?${queryParams.toString()}`
+        }
+        
+        const cacheKey = generateCacheKey('petfinder_all_pets', {
+          type: type || 'all',
+          subType,
+          location
+        })
+        
+        const cachedData = getFromSessionStorage(cacheKey)
+        
+        if (cachedData) {
+          console.log(`Using cached pet data for: ${cacheKey}`)
+          setPets(cachedData)
+          setLoading(false)
+          return
         }
         
         console.log(`Fetching pets from: ${url}`)
@@ -88,6 +99,8 @@ const AllPetsPageClient = () => {
         })
         
         if (data.pets && Array.isArray(data.pets)) {
+          // Save the fetched data to session storage (cache for 30 minutes)
+          saveToSessionStorage(cacheKey, data.pets, 30)
           setPets(data.pets)
         } else {
           console.error('Invalid pets data format:', data)
@@ -116,6 +129,15 @@ const AllPetsPageClient = () => {
       else if (subType === 'fish') {
         pageTitle = 'Fish Available for Adoption'
       }
+    } else if (type === 'dog') {
+      pageTitle = 'Dogs Available for Adoption'
+    } else if (type === 'cat') {
+      pageTitle = 'Cats Available for Adoption'
+    } else if (type === 'bird') {
+      pageTitle = 'Birds Available for Adoption'
+    } else if (type === 'small-pets') {
+      pageTitle = 'Small Pets Available for Adoption'
+    } else {
       // Capitalize and pluralize the type for the title
       const typeName = type.charAt(0).toUpperCase() + type.slice(1)
       pageTitle = `${typeName}s Available for Adoption`

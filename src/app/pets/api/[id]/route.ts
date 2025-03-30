@@ -1,5 +1,6 @@
-
-import { fetchPetDetails } from '@/lib/petfinder'; // Ensure this path is correct
+import { fetchPetDetails } from '@/lib/petfinder';
+export const dynamic = "auto"
+export const revalidate = 3600
 
 export async function GET(request: Request) {
     let id: string | undefined;
