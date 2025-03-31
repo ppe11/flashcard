@@ -26,64 +26,43 @@ Before running the project locally, ensure you have the following installed:
      ```
 
 ### MacOS
-1. **Install Homebrew (if not installed):**
-   - Open the **Terminal** application (search for it in Spotlight or find it in Applications > Utilities).
-   - Copy and paste the following command, then press **Enter**:
-     ```sh
-     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-     ```
-
-2. **Install Node.js:**
-   - In the **Terminal**, type:
-     ```sh
-     brew install node
-     ```
-   - Verify installation:
+1. **Install Node.js:**
+   - Open a web browser and go to [Node.js official website](https://nodejs.org/)
+   - Download and install the latest **LTS** version.
+   - Open the **Terminal** by searching for `Terminal` in Spotlight Search
+   - Verify installation by typing:
      ```sh
      node -v
      npm -v
      ```
 
-3. **Install Git:**
-   - In the **Terminal**, type:
-     ```sh
-     brew install git
-     ```
-   - Verify installation:
+2. **Install Git:**
+   - Go to [Git official website](https://git-scm.com/) and download the latest version.
+   - Run the installer and follow the setup instructions.
+   - Open **Terminal** and verify installation:
      ```sh
      git --version
      ```
 
 ### Linux (Ubuntu/Debian-based distros)
-1. **Update system packages:**
-   - Open the **Terminal** (usually found in Applications > Utilities).
-   - Run the following command:
-     ```sh
-     sudo apt update && sudo apt upgrade -y
-     ```
+1. **Open Terminal:**  
+   - Press `Ctrl + Alt + T` to open the terminal.
+   - Or, search for **Terminal** in the application menu (click **Activities** or **Applications**, then type `Terminal`).
 
-2. **Install Node.js:**
-   - Run these commands in the **Terminal**:
-     ```sh
-     curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-     sudo apt install -y nodejs
-     ```
-   - Verify installation:
-     ```sh
-     node -v
-     npm -v
-     ```
+2. **Install Node.js and Git:**
+   - In Terminal, enter the following command:
+   ```sh
+   sudo apt install -y nodejs git
+   ```
 
-3. **Install Git:**
-   - Run the following command in the **Terminal**:
-     ```sh
-     sudo apt install git
-     ```
-   - Verify installation:
-     ```sh
-     git --version
-     ```
-
+3. **Verify installation:**
+   - In Terminal, enter the following command:
+   ```sh
+   node -v
+   npm -v
+   git --version
+   ```
+   
 ## Installation Instructions
 
 ### 1. Open a Terminal or Command Prompt
