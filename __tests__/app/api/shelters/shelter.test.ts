@@ -111,10 +111,12 @@ describe('Shelters API Routes', () => {
         id: 'org1',
         name: 'Happy Paws Shelter',
         contact: '123-456-7890',
-        location: expect.stringContaining('123 Main St'),
-        hours: expect.stringContaining('Monday: 9AM-5PM'),
+        location: '123 Main St, Anytown, CA, 12345',
+        hours: 'Mon: 9AM-5PM, Tue: 9AM-5PM, Wed: 9AM-5PM, Thu: 9AM-5PM, Fri: 9AM-5PM, Sat: 10AM-4PM, Sun: Closed',
         email: 'info@happypaws.org',
         website: 'https://www.happypaws.org',
+        mission_statement: 'Finding forever homes for pets',
+        photos: expect.any(Array)
       }));
       
       expect(responseData.pagination).toBeDefined();
@@ -188,15 +190,18 @@ describe('Shelters API Routes', () => {
       
       // Verify the API was called with correct parameters
       expect(global.fetch).toHaveBeenCalledTimes(2);
-      expect(global.fetch).toHaveBeenCalledWith(
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        2,
         expect.stringContaining('location=San%20Francisco%2C%20CA'),
         expect.anything()
       );
-      expect(global.fetch).toHaveBeenCalledWith(
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        2,
         expect.stringContaining('distance=100'),
         expect.anything()
       );
-      expect(global.fetch).toHaveBeenCalledWith(
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        2,
         expect.stringContaining('sort=distance'),
         expect.anything()
       );
