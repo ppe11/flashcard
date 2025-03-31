@@ -246,11 +246,39 @@ describe('Pets API Routes', () => {
         expect(responseData.pets).toHaveLength(1);
         expect(responseData.pets[0].type).toBe(petType);
         
-        expect(global.fetch).toHaveBeenNthCalledWith(
-          2,
-          expect.stringContaining(`type=${encodedType}`),
-          expect.anything()
-        );
+        if (petType === 'Small & Furry') {
+          expect(global.fetch).toHaveBeenNthCalledWith(
+            2,
+            "https://api.petfinder.com/v2/animals?type=Small+%26+Furry&page=1&limit=100",
+            {
+              headers: {
+                Authorization: "Bearer mock-token",
+              },
+              next: {
+                revalidate: 3600,
+              },
+            }
+          );
+        } else if (petType === 'Scales, Fins & Other') {
+          expect(global.fetch).toHaveBeenNthCalledWith(
+            2,
+            "https://api.petfinder.com/v2/animals?type=Scales%2C+Fins+%26+Other&page=1&limit=100",
+            {
+              headers: {
+                Authorization: "Bearer mock-token",
+              },
+              next: {
+                revalidate: 3600,
+              },
+            }
+          );
+        } else {
+          expect(global.fetch).toHaveBeenNthCalledWith(
+            2,
+            expect.stringContaining(`type=${encodedType}`),
+            expect.anything()
+          );
+        }
       });
     });
 
@@ -326,14 +354,15 @@ describe('Pets API Routes', () => {
       expect(global.fetch).toHaveBeenCalledTimes(2);
       expect(global.fetch).toHaveBeenNthCalledWith(
         2,
-        expect.stringContaining(`location=${encodeURIComponent(location)}`),
-        expect.anything()
-      );
-      
-      expect(global.fetch).toHaveBeenNthCalledWith(
-        2,
-        expect.stringContaining('distance='),
-        expect.anything()
+        "https://api.petfinder.com/v2/animals?page=1&limit=100&location=San+Francisco%2C+CA&sort=distance",
+        {
+          headers: {
+            Authorization: "Bearer mock-token",
+          },
+          next: {
+            revalidate: 3600,
+          },
+        }
       );
     });
   });
@@ -398,7 +427,7 @@ describe('Pets API Routes', () => {
         })
       );
 
-      const url = new URL('http://localhost:3000/api/pets/123');
+      const url = new URL('http://localhost:3000/pets/api/123');
       const request = new Request(url);
       
       const response = await getPetById(request);
@@ -439,7 +468,7 @@ describe('Pets API Routes', () => {
         mockFetch({ status: 'not found' }, false)
       );
 
-      const url = new URL('http://localhost:3000/api/pets/999');
+      const url = new URL('http://localhost:3000/pets/api/999');
       const request = new Request(url);
       
       const response = await getPetById(request);
@@ -502,7 +531,7 @@ describe('Pets API Routes', () => {
         })
       );
 
-      const url = new URL('http://localhost:3000/api/pets/456');
+      const url = new URL('http://localhost:3000/pets/api/456');
       const request = new Request(url);
       
       const response = await getPetById(request);

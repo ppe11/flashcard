@@ -192,18 +192,13 @@ describe('Shelters API Routes', () => {
       expect(global.fetch).toHaveBeenCalledTimes(2);
       expect(global.fetch).toHaveBeenNthCalledWith(
         2,
-        expect.stringContaining('location=San%20Francisco%2C%20CA'),
-        expect.anything()
-      );
-      expect(global.fetch).toHaveBeenNthCalledWith(
-        2,
-        expect.stringContaining('distance=100'),
-        expect.anything()
-      );
-      expect(global.fetch).toHaveBeenNthCalledWith(
-        2,
-        expect.stringContaining('sort=distance'),
-        expect.anything()
+        "https://api.petfinder.com/v2/organizations?location=San+Francisco%2C+CA&distance=100&page=1&limit=21&sort=distance",
+        {
+          headers: {
+            Authorization: "Bearer mock-token",
+          },
+          cache: "no-store",
+        }
       );
     });
 
