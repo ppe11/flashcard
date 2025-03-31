@@ -8,17 +8,47 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from 'next/link';
 import { saveToSessionStorage, getFromSessionStorage, generateCacheKey } from '@/lib/clientStorage';
+import { LoadingBar } from '@/components/ui/loading-bar';
+import { useRouter } from 'next/navigation';
 
 const Shelters = () => {
+  const router = useRouter();
   const [shelters, setShelters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [locationSearch, setLocationSearch] = useState('');
   const [nameSearch, setNameSearch] = useState('');
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loadingMessage, setLoadingMessage] = useState("Loading shelters...");
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (loading) {
+      // Update progress over time
+      setLoadingProgress(10);
+      setTimeout(() => setLoadingProgress(30), 100);
+      setTimeout(() => setLoadingProgress(50), 400);
+      setTimeout(() => setLoadingProgress(70), 800);
+      
+      timer = setTimeout(() => {
+        setLoadingProgress(90);
+      }, 1500);
+    } else {
+      // Complete the progress animation
+      setLoadingProgress(100);
+      timer = setTimeout(() => {
+        setLoadingProgress(0);
+      }, 500);
+    }
+    
+    return () => clearTimeout(timer);
+  }, [loading]);
 
   useEffect(() => {
     async function fetchShelters() {
       setLoading(true);
+      setLoadingMessage("Loading shelters...");
       setError(null);
       
       try {
@@ -70,6 +100,7 @@ const Shelters = () => {
 
   const handleSearch = async () => {
     setLoading(true);
+    setLoadingMessage("Searching shelters...");
     setError(null);
 
     try {
@@ -121,8 +152,29 @@ const Shelters = () => {
     }
   };
 
+  const handleViewShelter = (shelterId) => {
+    setIsNavigating(true);
+    setLoadingMessage("Loading shelter details...");
+    
+    // Create a smooth loading animation
+    setLoadingProgress(10);
+    setTimeout(() => setLoadingProgress(40), 100);
+    setTimeout(() => setLoadingProgress(70), 300);
+    
+    // Navigate after a short delay to allow the loading animation to be seen
+    setTimeout(() => {
+      router.push(`/shelters/${shelterId}`);
+    }, 600);
+  };
+
   return (
     <div className="w-full mx-auto p-20 pt-[100px] 2xl:pt-[150px]">
+      <LoadingBar 
+        isLoading={loading || isNavigating} 
+        message={loadingMessage}
+        progress={loadingProgress}
+      />
+      
       {/* Search Section */}
       <div className="flex flex-col items-center gap-6">
         <h2 className="text-2xl font-semibold">Search nearby pet shelters</h2>
@@ -166,7 +218,7 @@ const Shelters = () => {
       
       {/* Loading and Error States */}
       {loading ? (
-        <div className="text-center py-10">Loading shelters...</div>
+        <div className="text-center py-10"></div>
       ) : error ? (
         <div className="text-center py-10 text-red-500">
           Error: {error}
@@ -204,12 +256,12 @@ const Shelters = () => {
                     <p className="text-sm">Contact: {shelter.contact}</p>
                     <p className="text-sm">Location: {shelter.location}</p>
                     <p className="text-sm">Open: {shelter.hours}</p>
-                    <Link href={`/shelters/${shelter.id}`}>
-                      <Button 
-                        className="mt-4 bg-orange-500 hover:bg-orange-600 text-white w-full text-md rounded-2xl">
-                        View
-                      </Button>
-                    </Link>
+                    <Button 
+                      className="mt-4 bg-orange-500 hover:bg-orange-600 text-white w-full text-md rounded-2xl"
+                      onClick={() => handleViewShelter(shelter.id)}
+                    >
+                      View
+                    </Button>
                   </CardContent>
                 </div>
               </Card>

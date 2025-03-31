@@ -52,7 +52,11 @@ async function getShelter(id) {
 }
 
 export default async function ShelterDetail({ params }) {
-  const shelter = await getShelter(params.id);
+  // Extract the ID value before passing to client components
+  const { id } = await params;
+  const shelterId = id;
+  
+  const shelter = await getShelter(shelterId);
   if (!shelter) return <div className="p-20 text-center text-red-500">Shelter not found.</div>;
 
   return (
@@ -63,7 +67,7 @@ export default async function ShelterDetail({ params }) {
           <div className="w-[180px] h-[180px] bg-white rounded-lg flex items-center justify-center overflow-hidden">
             <Image
               src={shelter.photos?.[0]?.medium || assets.icon_paw}
-              alt="shelter logo"
+              alt="shelter logo" 
               width={180}
               height={150}
               className="object-cover"
@@ -86,14 +90,12 @@ export default async function ShelterDetail({ params }) {
   
         <div className="flex flex-col items-center gap-3 w-full md:w-1/3">
           {shelter.website ? (
-            <Link href={shelter.website} passHref legacyBehavior>
-              <a 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-2 border-2 text-orange-500 border-orange-500 font-semibold rounded-full hover:bg-orange-500 hover:text-white transition duration-300"
-              >
-                VIEW OUR SHELTER
-              </a>
+            <Link 
+              href={shelter.website}
+              target="_blank"
+              className="px-6 py-2 border-2 text-orange-500 border-orange-500 font-semibold rounded-full hover:bg-orange-500 hover:text-white transition duration-300"
+            >
+              VIEW OUR SHELTER
             </Link>
           ) : null}
 
@@ -120,7 +122,6 @@ export default async function ShelterDetail({ params }) {
       </div>
     </div>
   );
-  
 }
 
 // Helper

@@ -1,10 +1,11 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation' // Import useRouter
+import { useSearchParams, useRouter } from 'next/navigation'
 import PetGrid from '../../components/PetGrid'
 import FilterButtons from '../../components/FilterButtons'
 import { saveToSessionStorage, getFromSessionStorage, generateCacheKey } from '../../lib/clientStorage'
+import { LoadingBar } from '@/components/ui/loading-bar'
 
 const AllPetsPageClient = () => {
   const [pets, setPets] = useState([])
@@ -24,6 +25,9 @@ const AllPetsPageClient = () => {
       location: searchParams.get('location') || '',
     };
     localStorage.setItem('petFilters', JSON.stringify(currentFilters));
+    
+    // Show loading when navigating to pet details
+    setLoading(true);
     router.push(`/pets/${petId}`);
   };
 
@@ -146,15 +150,17 @@ const AllPetsPageClient = () => {
 
   return (
     <div className="pt-[10vh] pb-24 w-full max-w-screen-xl mx-auto px-4">
+      <LoadingBar 
+        isLoading={loading}
+        message={loading ? "Loading Pets..." : ""}
+      />
       <h1 className="text-3xl font-bold text-center my-8">
         {pageTitle}
       </h1>
       
       <FilterButtons activeType={type || 'all'} />
       
-      {loading ? (
-        <div className="text-center py-10">Loading pets...</div>
-      ) : error ? (
+      {error ? (
         <div className="text-center py-10 text-red-500">
           Error: {error}
         </div>
