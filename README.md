@@ -113,3 +113,6 @@ Before running the project locally, ensure you have the following installed:
   ```
   inside the project directory first, this will give you full control over the files and should fix the permission error.
 
+## Videos and Website
+[Love At FIrst Paw Website, deployed with Vercel.](https://love-at-first-paw.vercel.app/)
+
