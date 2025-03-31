@@ -476,7 +476,7 @@ describe('Pets API Routes', () => {
       expect(response.status).toBe(500);
       const responseData = await response.json();
       
-      expect(responseData.message).toContain('Error');
+      expect(responseData.message).toContain('Failed to process request due to a server error.');
     });
 
     it('should verify pet has all required characteristics', async () => {
