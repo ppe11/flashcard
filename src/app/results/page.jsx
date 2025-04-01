@@ -32,60 +32,66 @@ const ResultsPage = () => {
       setFallbackMessage(fallback);
     }
 
-    // 🧠 Dynamic title logic
+    //  Dynamic title logic
     if (petType === 'scales-fins-other' && petSubType === 'fish') {
-      setPageTitle('Fish Available for Adoption');
+      setPageTitle('Fish Available for Adoption🐟');
     } else if (petType === 'scales-fins-other' && petSubType === 'reptile') {
-      setPageTitle('Reptiles Available for Adoption');
-    } else if (petType === 'small-furry') {
-      setPageTitle('Small Pets Available for Adoption');
-    } else if (petType === 'rabbit') {
-      setPageTitle('Rabbits Available for Adoption');
+      setPageTitle('Reptiles Available for Adoption🦖');
+    } else if (petType === 'small-pets') {
+      setPageTitle('Small Pets Available for Adoption🐰');
     } else if (petType === 'dog') {
-      setPageTitle('Dogs Available for Adoption');
+      setPageTitle('Dogs Available for Adoption🐶');
     } else if (petType === 'cat') {
-      setPageTitle('Cats Available for Adoption');
+      setPageTitle('Cats Available for Adoption🐾');
     } else if (petType === 'bird') {
-      setPageTitle('Birds Available for Adoption');
+      setPageTitle('Birds Available for Adoption🐣');
     }
   }, []);
 
   return (
-    <div className="w-full text-center min-h-screen pt-28 px-4">
+    <div className="w-full text-center min-h-screen pt-28 px-10">
       <h2 className="text-3xl font-semibold mb-4">{pageTitle}</h2>
 
       {fallbackMessage && (
         <p className="text-orange-500 text-lg mb-6 font-medium">{fallbackMessage}</p>
       )}
+      <div className="mb-8">
+        <Button
+          className="bg-orange-500 hover:bg-orange-600 text-white text-lg rounded-full shadow-xl px-8 py-3"
+          onClick={() => window.location.href = '/'}
+        >
+          Retake Quiz
+        </Button>
+      </div>
 
       {pets.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 px-26">
           {pets.map((pet) => (
             <Card
               key={pet.id}
-              className="shadow-md hover:shadow-lg transition duration-300 rounded-xl bg-orange-50"
+              className="rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition py-3 duration-600 bg-orange-50"
             >
-              <CardHeader className="flex justify-center p-4">
+              <CardHeader className="relative h-40 w-full mb-3 flex justify-center mt-4">
                 <img
                   src={pet.photos?.[0]?.medium || 'https://via.placeholder.com/300x300?text=No+Image'}
                   alt={pet.name}
-                  className="w-40 h-40 object-cover rounded-lg"
+                  width={180}
+                  height={180}
+                  className="h-full object-cover rounded-lg"
                 />
               </CardHeader>
 
               <CardContent className="text-center">
                 <h3 className="text-xl font-semibold">{pet.name}</h3>
-                <ul className="text-sm text-gray-700 mt-2 space-y-1">
-                  <li>• Breed: {pet.breed || 'Unknown'}</li>
-                  <li>• Age: {pet.age}</li>
-                  <li>• Gender: {pet.gender}</li>
-                  <li>• Size: {pet.size}</li>
+                <ul className="text-md text-gray-700 mt-2 space-y-1">
+                  <li> {pet.breed || 'Unknown'}</li>
+                  <li> {pet.age} • {pet.gender} </li>
                 </ul>
               </CardContent>
 
-              <CardFooter className="flex justify-center p-4">
+              <CardFooter className="flex justify-center mb-2">
                 <Button
-                  className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2 text-md"
+                  className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 text-md"
                   onClick={() => {
                     // Optional: store filters if you want them available on details page
                     localStorage.setItem('petFilters', JSON.stringify({
@@ -106,14 +112,6 @@ const ResultsPage = () => {
         <p className="text-gray-500 mt-10">No pets found. Try retaking the quiz.</p>
       )}
 
-      <div className="mt-12">
-        <Button
-          className="bg-orange-500 hover:bg-orange-600 text-white text-md rounded-full shadow-xl px-8 py-3"
-          onClick={() => window.location.href = '/'}
-        >
-          Retake Quiz
-        </Button>
-      </div>
     </div>
   );
 };
