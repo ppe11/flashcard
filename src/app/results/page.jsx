@@ -7,10 +7,13 @@ import { Button } from '@/components/ui/button';
 const ResultsPage = () => {
   const [pets, setPets] = useState([]);
   const [fallbackMessage, setFallbackMessage] = useState('');
+  const [pageTitle, setPageTitle] = useState('Your Perfect Pet Awaits! 🐾');
 
   useEffect(() => {
     const storedPets = localStorage.getItem('pets');
     const fallback = localStorage.getItem('fallbackMessage');
+    const petType = localStorage.getItem('petType');
+    const petSubType = localStorage.getItem('petSubType');
 
     if (storedPets) {
       try {
@@ -26,11 +29,28 @@ const ResultsPage = () => {
     if (fallback) {
       setFallbackMessage(fallback);
     }
+
+    // 🧠 Dynamic title logic
+    if (petType === 'scales-fins-other' && petSubType === 'fish') {
+      setPageTitle('Fish Available for Adoption');
+    } else if (petType === 'scales-fins-other' && petSubType === 'reptile') {
+      setPageTitle('Reptiles Available for Adoption');
+    } else if (petType === 'small-furry') {
+      setPageTitle('Small Pets Available for Adoption');
+    } else if (petType === 'rabbit') {
+      setPageTitle('Rabbits Available for Adoption');
+    } else if (petType === 'dog') {
+      setPageTitle('Dogs Available for Adoption');
+    } else if (petType === 'cat') {
+      setPageTitle('Cats Available for Adoption');
+    } else if (petType === 'bird') {
+      setPageTitle('Birds Available for Adoption');
+    }
   }, []);
 
   return (
     <div className="w-full text-center min-h-screen pt-28 px-4">
-      <h2 className="text-3xl font-semibold mb-4">Your Perfect Pet Awaits! 🐾</h2>
+      <h2 className="text-3xl font-semibold mb-4">{pageTitle}</h2>
 
       {fallbackMessage && (
         <p className="text-orange-500 text-lg mb-6 font-medium">{fallbackMessage}</p>
@@ -62,13 +82,18 @@ const ResultsPage = () => {
               </CardContent>
 
               <CardFooter className="flex justify-center p-4">
-              <Button
-                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2 text-md"
-                onClick={() => window.open(`https://www.petfinder.com/search/pets-for-adoption/?pet_id=${pet.id}`, '_blank')}
-              >
-                Adopt me!
-              </Button>
-            </CardFooter>
+                <Button
+                  className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2 text-md"
+                  onClick={() =>
+                    window.open(
+                      `https://www.petfinder.com/search/pets-for-adoption/?pet_id=${pet.id}`,
+                      '_blank'
+                    )
+                  }
+                >
+                  Adopt me!
+                </Button>
+              </CardFooter>
             </Card>
           ))}
         </div>
