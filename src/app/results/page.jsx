@@ -84,8 +84,8 @@ const ResultsPage = () => {
               <CardContent className="text-center">
                 <h3 className="text-xl font-semibold">{pet.name}</h3>
                 <ul className="text-md text-gray-700 mt-2 space-y-1">
-                  <li> {pet.breed || 'Unknown'}</li>
-                  <li> {pet.age} • {pet.gender} </li>
+                  <li> {pet.breed} </li>
+                  <li> {pet.age} • {pet.gender}</li>
                 </ul>
               </CardContent>
 
