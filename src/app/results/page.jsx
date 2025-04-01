@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const ResultsPage = () => {
   const [pets, setPets] = useState([]);
   const [fallbackMessage, setFallbackMessage] = useState('');
   const [pageTitle, setPageTitle] = useState('Your Perfect Pet Awaits! 🐾');
+  const router = useRouter();
 
   useEffect(() => {
     const storedPets = localStorage.getItem('pets');
@@ -84,12 +86,15 @@ const ResultsPage = () => {
               <CardFooter className="flex justify-center p-4">
                 <Button
                   className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2 text-md"
-                  onClick={() =>
-                    window.open(
-                      `https://www.petfinder.com/search/pets-for-adoption/?pet_id=${pet.id}`,
-                      '_blank'
-                    )
-                  }
+                  onClick={() => {
+                    // Optional: store filters if you want them available on details page
+                    localStorage.setItem('petFilters', JSON.stringify({
+                      type: localStorage.getItem('petType') || '',
+                      subType: localStorage.getItem('petSubType') || ''
+                    }));
+
+                    router.push(`/pets/${pet.id}`);
+                  }}
                 >
                   Adopt me!
                 </Button>
