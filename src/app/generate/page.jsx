@@ -2,12 +2,10 @@
 
 import React from 'react'
 import Flashcard from '../../components/Flashcardform'
-import Navbar from '@/components/Navbar'
 
 const GeneratePage = () => {
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-[#11001f] text-white pt-32 px-6 flex flex-col items-center">
         <h1 className="text-4xl font-extrabold text-center mb-10">
           Generate Your{' '}
