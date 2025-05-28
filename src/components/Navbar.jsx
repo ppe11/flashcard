@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 h-20 px-6 lg:px-12 bg-[#11001f]/80 backdrop-blur-md border-b border-white/10 flex items-center justify-between text-white relative">
+    <nav className="fixed top-0 left-0 w-full z-50 h-20 px-6 lg:px-12 bg-[#11001f] backdrop-blur-md border-b border-white/10 flex items-center justify-between text-white relative">
       {/* Logo Left */}
       <div className="z-10">
         <a href="/">
