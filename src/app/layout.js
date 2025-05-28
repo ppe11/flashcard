@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import {Suspense} from 'react';
 import Head from 'next/head';
 
@@ -36,7 +35,6 @@ export default function RootLayout({ children }) {
        <Suspense fallback={<div>Loading...</div>}>
        <main className="flex-grow">{children}</main>
        </Suspense>
-        <Footer/>
       </body>
     </html>
   );

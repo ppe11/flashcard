@@ -1,4 +1,4 @@
-import icon_paw from './icon-paw.png';
+import logo from './logo.png';
 import home_cat from './homecat.png';
 import instagram from './instagram.png';
 import twitter from './twitter.png';
@@ -26,7 +26,7 @@ export const assets = {
     location,
     email,
     link,
-    icon_paw,
+    logo,
     home_cat,
     instagram,
     twitter,
