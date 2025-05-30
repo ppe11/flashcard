@@ -22,11 +22,11 @@ const Flashcard = () => {
     setLoading(true)
     setFlashcards([])
 
-    const response = await fetch('http://127.0.0.1:8000/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("https://flashcard-3-4unx.onrender.com/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt: topic }),
-    })
+    });
 
     const data = await response.json()
     const raw = data.response
@@ -74,26 +74,6 @@ const Flashcard = () => {
             className="bg-purple-600 text-white font-semibold py-2 px-6 rounded hover:bg-purple-700 transition disabled:opacity-50 flex items-center gap-2"
             disabled={loading || !topic.trim()}
           >
-            {loading && (
-              <div
-                className="flex justify-center mt-6 text-5xl"
-                style={{
-                  animation: 'dance 0.6s ease-in-out infinite alternate',
-                }}
-              >
-                🤖
-                <style jsx>{`
-                  @keyframes dance {
-                    0% {
-                      transform: rotate(-10deg) scale(1.1);
-                    }
-                    100% {
-                      transform: rotate(10deg) scale(1.1);
-                    }
-                  }
-                `}</style>
-              </div>
-            )}
 
             {loading ? 'Generating...' : 'Generate Flashcards'}
           </button>
